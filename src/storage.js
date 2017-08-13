@@ -31,7 +31,7 @@ const defaultStateObject = { [Constants.STATE_KEY]: {
     wsh: {
         // environmental variables
         env: {
-            'background': '#555',
+            'background': '#aaa',
             'prompt': '%w $ ',
             'username': 'WatTerm',
         },

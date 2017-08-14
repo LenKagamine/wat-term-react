@@ -54,6 +54,10 @@ html, body, #root {
     padding: 20px;
 }
 
+.window.selected {
+    border: 1px solid #999;
+}
+
 .window-info {
     background: #0A0A0A;
     width: 100%;

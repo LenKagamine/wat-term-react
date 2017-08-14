@@ -6,18 +6,21 @@ import Workspace from './workspace.jsx';
 import BottomBar from './bottombar.jsx';
 
 const App = ({ currentWorkspace, background }) => {
-    return <div style={{
+    return (
+        <div style={{
             width: '100%',
             height: '100%',
             background
         }}>
-        <Workspace workspace={currentWorkspace}/>
-        <BottomBar />
-    </div>
+            <Workspace workspace={currentWorkspace}/>
+            <BottomBar />
+        </div>
+    );
 }
 
 App.propTypes = {
-    currentWorkspace: PropTypes.object.isRequired
+    currentWorkspace: PropTypes.object.isRequired,
+    background: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => {

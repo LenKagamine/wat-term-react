@@ -1,29 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Terminal from './terminal.jsx';
 
-const Window = ({ window }) => {
-    return <div className='window-box' style={{
-        width: window.width + '%',
-        height: window.height + '%',
-        left: window.x + '%',
-        top: window.y + '%'
-    }}>
-        <div className='window'>
-            <Terminal terminal={window.terminal}/>
+const Window = ({ window, selected, onClick }) => {
+    return (
+        <div className='window-box' onClick={() => onClick(window.id)} style={{
+            width: window.width + '%',
+            height: window.height + '%',
+            left: window.x + '%',
+            top: window.y + '%'
+        }}>
+            <div className={'window' + (selected ? ' selected' : ' ')}>
+                <Terminal terminal={window.terminal} selected={selected}/>
+            </div>
+            <div className='window-info'>
+                <span>{window.id}</span>
+                <span style={{ float: 'right' }}>
+                    {window.x}, {window.y}, {window.width}, {window.height}
+                </span>
+            </div>
         </div>
-        <div className='window-info'>
-            <span>{window.id}</span>
-            <span style={{ float: 'right' }}>
-                {window.x}, {window.y}, {window.width}, {window.height}
-            </span>
-        </div>
-    </div>
+    );
 };
 
 Window.propTypes = {
-    window: PropTypes.object.isRequired
+    window: PropTypes.object.isRequired,
+    selected: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired
 };
 
-export default Window;
+const mapDispatchToProps = dispatch => {
+    return {
+        onClick: id => {
+            dispatch({
+                type: 'SELECT_WINDOW',
+                id: id
+            })
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Window);

@@ -12,14 +12,16 @@ const BottomBar = ({ numWorkspaces, selectedWorkspace, username, onClick }) => {
             (id => buttons.push(<div className='ws-btn' key={id} onClick={() => onClick(id)}>{id}</div>))(i);
         }
     }
-    return <div className='bottombar'>
-        <div className='ws-btn-list'>
-            {buttons}
+    return (
+        <div className='bottombar'>
+            <div className='ws-btn-list'>
+                {buttons}
+            </div>
+            <div className='logged-in-as'>
+                Logged in as {username}
+            </div>
         </div>
-        <div className='logged-in-as'>
-            Logged in as {username}
-        </div>
-    </div>
+    );
 };
 
 BottomBar.propTypes = {

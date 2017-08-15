@@ -8,10 +8,10 @@ const defaultStateObject = { [Constants.STATE_KEY]: {
             y: 0,
             width: 100,
             height: 100,
-            id: 12345,
+            id: 0,
             terminal: {
-                history: [''],
-                historyIndex: 0,
+                history: ['test0', 'test1', ''],
+                historyIndex: 2,
                 inProg: false,
                 output: 'WatTerm 1.0\n',
                 runningCommand: '',
@@ -38,7 +38,7 @@ const defaultStateObject = { [Constants.STATE_KEY]: {
         // alias mappings
         aliases: []
     },
-    selectedWindow: 12345,
+    selectedWindow: 0,
     selectedWorkspace: 0
 }};
 

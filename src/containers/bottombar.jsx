@@ -5,12 +5,17 @@ import { connect } from 'react-redux';
 const BottomBar = ({ numWorkspaces, selectedWorkspace, username, onClick }) => {
     var buttons = [];
     for (var i = 0; i < numWorkspaces; i++) {
-        if (i === selectedWorkspace) {
-            (id => buttons.push(<div className='ws-btn selected' key={id} onClick={() => onClick(id)}>{id}</div>))(i);
-        }
-        else {
-            (id => buttons.push(<div className='ws-btn' key={id} onClick={() => onClick(id)}>{id}</div>))(i);
-        }
+        (id =>
+            buttons.push(
+                <div
+                    className={'ws-btn' + (i === selectedWorkspace ? ' selected' : '')}
+                    key={id}
+                    onClick={() => onClick(id)}
+                >
+                    {id}
+                </div>
+            )
+        )(i);
     }
     return (
         <div className='bottombar'>

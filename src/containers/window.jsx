@@ -36,7 +36,7 @@ const mapDispatchToProps = dispatch => {
         onClick: id => {
             dispatch({
                 type: 'SELECT_WINDOW',
-                id: id
+                id
             })
         }
     }

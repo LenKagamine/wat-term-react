@@ -10,10 +10,9 @@ const defaultStateObject = { [Constants.STATE_KEY]: {
             height: 100,
             id: 0,
             terminal: {
-                history: ['test0', 'test1', ''],
-                historyIndex: 2,
+                history: [''],
                 inProg: false,
-                output: 'WatTerm 1.0\n',
+                output: [],
                 runningCommand: '',
                 workingDirectory: '~'
             }

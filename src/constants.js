@@ -13,5 +13,6 @@ module.exports = {
     KEY_J: 74,
     KEY_K: 75,
     KEY_L: 76,
-    KEY_ENTER: 13
+    KEY_ENTER: 13,
+    KEY_BACKSPACE: 8
 };

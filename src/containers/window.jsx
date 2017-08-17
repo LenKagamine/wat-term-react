@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Terminal from './terminal.jsx';
+import TerminalLink from './terminal-link.jsx';
 
 const Window = ({ window, selected, onClick }) => {
     return (
@@ -13,7 +13,7 @@ const Window = ({ window, selected, onClick }) => {
             top: window.y + '%'
         }}>
             <div className={'window' + (selected ? ' selected' : ' ')}>
-                <Terminal terminal={window.terminal} selected={selected}/>
+                <TerminalLink terminal={window.terminal} selected={selected}/>
             </div>
             <div className='window-info'>
                 <span>{window.id}</span>

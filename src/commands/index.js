@@ -1,4 +1,7 @@
 import { clear } from '../storage';
+import env from './env';
+import window from './window';
+import workspace from './workspace';
 
 function findWindow(state, id) {
     var windows = state.workspaces[state.selectedWorkspace].windows;
@@ -12,8 +15,8 @@ function findWindow(state, id) {
 
 function executeCommand(state, command, params) {
     console.log(command, params);
-    const index = findWindow(state, state.selectedWindow);
-    var terminal = state.workspaces[state.selectedWorkspace].windows[index].terminal;
+    const windowId = findWindow(state, state.selectedWindow);
+    var terminal = state.workspaces[state.selectedWorkspace].windows[windowId].terminal;
 
     switch(command) {
         case 'reset':
@@ -22,22 +25,11 @@ function executeCommand(state, command, params) {
             terminal.output = [];
             return state;
         case 'env':
-            if (params.length === 1) {
-                terminal.output.push({
-                    text: state.wsh.env[params[0]],
-                    prompt: false
-                });
-            }
-            else if (params.length === 2) {
-                state.wsh.env[params[0]] = params[1];
-            }
-            else {
-                terminal.output.push({
-                    text: command + ': Incorrect number of parameters',
-                    prompt: false
-                });
-            }
-            return state;
+            return env(state, params, terminal);
+        case 'window':
+            return window(state, params, windowId);
+        case 'workspace':
+            return workspace(state, params, terminal);
         default:
             terminal.output.push({
                 text: command + ': command not found',

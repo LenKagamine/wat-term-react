@@ -5,7 +5,7 @@
 //
 // const todoApp = combineReducers(reducers)
 
-import executeCommand from './commands';
+import executeCommand from '../commands';
 import { save } from '../storage';
 
 function findWindow(state, id) {
@@ -52,6 +52,9 @@ const rootReducer = function (state = {}, action) {
             // action.text
             const parts = action.text.trim().split(' ');
             return executeCommand(newState, parts[0], parts.slice(1));
+        }
+        case 'STORAGE_CHANGED': {
+            return action.data;
         }
         default:
             return state;

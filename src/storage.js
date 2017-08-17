@@ -1,6 +1,7 @@
 import Constants from './constants';
 
 // INITIAL STATE
+const id = +new Date();
 const defaultStateObject = { [Constants.STATE_KEY]: {
     workspaces: [{
         windows: [{
@@ -8,7 +9,7 @@ const defaultStateObject = { [Constants.STATE_KEY]: {
             y: 0,
             width: 100,
             height: 100,
-            id: 0,
+            id: id,
             terminal: {
                 history: [''],
                 inProg: false,
@@ -37,7 +38,7 @@ const defaultStateObject = { [Constants.STATE_KEY]: {
         // alias mappings
         aliases: []
     },
-    selectedWindow: 0,
+    selectedWindow: id,
     selectedWorkspace: 0
 }};
 
@@ -54,9 +55,15 @@ function clear() {
             console.error(error);
         }
     });
+    return defaultStateObject[Constants.STATE_KEY];
+}
+
+function save(state) {
+    chrome.storage.local.set({ [Constants.STATE_KEY]: state });
 }
 
 module.exports = {
     clear,
-    load
+    load,
+    save
 };

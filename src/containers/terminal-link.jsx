@@ -21,6 +21,15 @@ class TerminalLink extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.state.historyIndex < 0) {
+            this.setState({ historyIndex: 0 });
+        }
+        else if (this.state.historyIndex >= nextProps.terminal.history.length) {
+            this.setState({ historyIndex: nextProps.terminal.history.length - 1 });
+        }
+    }
+
     handleKey(e) {
         const history = this.props.terminal.history;
         const command = history[this.state.historyIndex];
@@ -79,6 +88,10 @@ class TerminalLink extends React.Component {
 
     render() {
         const prompt = this.props.prompt.replace('%w', this.props.terminal.workingDirectory);
+        var command = this.props.terminal.history[this.state.historyIndex];
+        if (command === undefined) {
+            command = this.props.terminal.history[0];
+        }
 
         return (
             <div
@@ -89,7 +102,7 @@ class TerminalLink extends React.Component {
             >
                 <Terminal
                     output={this.props.terminal.output}
-                    command={this.props.terminal.history[this.state.historyIndex]}
+                    command={command}
                     cursor={this.state.cursor}
                     prompt={prompt}
                     selected={this.props.selected}

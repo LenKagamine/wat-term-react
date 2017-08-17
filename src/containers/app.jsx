@@ -6,11 +6,16 @@ import Workspace from './workspace.jsx';
 import BottomBar from './bottombar.jsx';
 
 const App = ({ currentWorkspace, background }) => {
+    var bg = background;
+    if (bg.startsWith('http://') || bg.startsWith('https://')) {
+        bg = 'url("' + bg + '")';
+    }
+
     return (
         <div style={{
             width: '100%',
             height: '100%',
-            background
+            background: bg
         }}>
             <Workspace workspace={currentWorkspace}/>
             <BottomBar />

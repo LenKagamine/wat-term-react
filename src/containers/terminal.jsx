@@ -6,18 +6,20 @@ const Terminal = ({output, command, cursor, prompt, selected}) => {
     const cursorText = command.slice(cursor, cursor + 1) || ' ';
     const rightText = command.slice(cursor + 1);
 
+    var formatOutput = [];
+    for (var i = 0; i < output.length; i++) {
+        formatOutput.push(
+            <p key={i + '_' + output[i].text}>
+                {output[i].prompt && <span className='prompt'>{prompt}</span>}
+                {output[i].text}
+            </p>
+        )
+    }
     return (
         <div className='terminal'>
             <div className='terminal-text'>
                 <p>WatTerm 1.0</p>
-                {output.map(line =>
-                    <p>
-                        <span className='prompt'>
-                            {prompt}
-                        </span>
-                        {line}
-                    </p>
-                )}
+                {formatOutput}
                 <p>
                     <span className='prompt'>{prompt}</span>
                     <span className='before'>{leftText}</span>

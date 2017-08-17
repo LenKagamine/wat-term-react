@@ -5,6 +5,9 @@
 //
 // const todoApp = combineReducers(reducers)
 
+import executeCommand from './commands';
+import { save } from '../storage';
+
 function findWindow(state, id) {
     var windows = state.workspaces[state.selectedWorkspace].windows;
     for(var i = 0; i < windows.length; i++) {
@@ -16,7 +19,7 @@ function findWindow(state, id) {
 }
 
 const rootReducer = function (state = {}, action) {
-    console.log(action);
+    if (action.type !== 'UPDATE_COMMAND') console.log(action);
     switch(action.type) {
         case 'SELECT_WINDOW': {
             var newState = JSON.parse(JSON.stringify(state));
@@ -41,10 +44,13 @@ const rootReducer = function (state = {}, action) {
             const index = findWindow(newState, newState.selectedWindow);
             var newTerminal = newState.workspaces[newState.selectedWorkspace].windows[index].terminal;
             newTerminal.history[newTerminal.history.length - 1] = action.text;
-            newTerminal.output.push(action.text);
+            newTerminal.output.push({
+                text: action.text,
+                prompt: true
+            });
             newTerminal.history.push('');
             // action.text
-            const parts = action.text.split(' ');
+            const parts = action.text.trim().split(' ');
             return executeCommand(newState, parts[0], parts.slice(1));
         }
         default:
@@ -52,9 +58,10 @@ const rootReducer = function (state = {}, action) {
     }
 }
 
-function executeCommand(state, command, params) {
-    console.log(command, params);
-    return state;
+const saveWrapper = function (state, action) {
+    const newState = rootReducer(state, action);
+    save(newState);
+    return newState;
 }
 
-export default rootReducer;
+export default saveWrapper;

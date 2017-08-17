@@ -8,7 +8,7 @@ import reducers from './reducers';
 import Storage from './storage';
 import App from './containers/app.jsx';
 
-Storage.clear();
+// Storage.clear();
 Storage.load(newState => {
     console.log(newState);
     let store = createStore(reducers, newState);

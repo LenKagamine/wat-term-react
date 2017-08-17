@@ -24,7 +24,6 @@ class TerminalLink extends React.Component {
     handleKey(e) {
         const history = this.props.terminal.history;
         const command = history[this.state.historyIndex];
-        console.log(history, command);
 
         if (!this.props.selected || this.props.terminal.inProg) {
             return;
@@ -37,14 +36,12 @@ class TerminalLink extends React.Component {
             });
         }
         else if (e.keyCode === Constants.KEY_UP_ARROW && this.state.historyIndex > 0) {
-            console.log(this.state.historyIndex);
             this.setState({
                 cursor: history[this.state.historyIndex - 1].length,
                 historyIndex: this.state.historyIndex - 1
             });
         }
         else if (e.keyCode === Constants.KEY_DOWN_ARROW && this.state.historyIndex < history.length - 1) {
-            console.log(this.state.historyIndex);
             this.setState({
                 cursor: history[this.state.historyIndex + 1].length,
                 historyIndex: this.state.historyIndex + 1
@@ -61,13 +58,19 @@ class TerminalLink extends React.Component {
             });
         }
         else if (e.keyCode === Constants.KEY_BACKSPACE && this.state.cursor > 0) {
-            this.props.updateCommand(command.slice(0, this.state.cursor - 1) + command.slice(this.state.cursor), this.state.historyIndex);
+            this.props.updateCommand(
+                command.slice(0, this.state.cursor - 1) + command.slice(this.state.cursor),
+                this.state.historyIndex
+            );
             this.setState({
                 cursor: this.state.cursor - 1
             });
         }
         else if(e.key.length === 1) {
-            this.props.updateCommand(command.slice(0, this.state.cursor) + e.key + command.slice(this.state.cursor), this.state.historyIndex);
+            this.props.updateCommand(
+                command.slice(0, this.state.cursor) + e.key + command.slice(this.state.cursor),
+                this.state.historyIndex
+            );
             this.setState({
                 cursor: this.state.cursor + 1
             });
@@ -76,6 +79,7 @@ class TerminalLink extends React.Component {
 
     render() {
         const prompt = this.props.prompt.replace('%w', this.props.terminal.workingDirectory);
+
         return (
             <div
                 className='terminal-link'

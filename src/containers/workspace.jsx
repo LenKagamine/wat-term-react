@@ -7,7 +7,13 @@ import Window from './window.jsx';
 const Workspace = ({ workspace, currentWindowId }) => {
     var windows = [];
     for(var i = 0; i < workspace.windows.length; i++) {
-        windows.push(<Window key={i} window={workspace.windows[i]} selected={workspace.windows[i].id === currentWindowId}/>);
+        windows.push(
+            <Window
+                key={workspace.windows[i].id}
+                window={workspace.windows[i]}
+                selected={workspace.windows[i].id === currentWindowId}
+            />
+        );
     }
     return (
         <div className='workspace'>

@@ -21,7 +21,7 @@ const Terminal = ({output, command, cursor, prompt, selected}) => {
                 <p>
                     <span className='prompt'>{prompt}</span>
                     <span className='before'>{leftText}</span>
-                    <span className='cursor blink'>{cursorText}</span>
+                    <span className={'cursor' + (selected ? ' blink': '')}>{cursorText}</span>
                     <span className='after'>{rightText}</span>
                 </p>
             </div>

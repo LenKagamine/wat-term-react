@@ -8,6 +8,11 @@
 const rootReducer = function (state = {}, action) {
     console.log(action);
     switch(action.type) {
+        case 'SELECT_WINDOW': {
+            var newState = JSON.parse(JSON.stringify(state));
+            newState.selectedWindow = action.id;
+            return newState;
+        }
         case 'UPDATE_COMMAND': {
             // Split into smaller reducers later
             var newState = JSON.parse(JSON.stringify(state));

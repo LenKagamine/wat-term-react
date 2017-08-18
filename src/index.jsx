@@ -12,12 +12,12 @@ import App from './containers/app.jsx';
 Storage.load(newState => {
     console.log(newState);
     let store = createStore(reducers, newState);
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-        store.dispatch({
-            type: 'STORAGE_CHANGED',
-            data: changes['state'].newValue
-        });
-    });
+    // chrome.storage.onChanged.addListener((changes, namespace) => {
+    //     store.dispatch({
+    //         type: 'STORAGE_CHANGED',
+    //         data: changes['state'].newValue
+    //     });
+    // });
 
     render(
         <Provider store={store}>

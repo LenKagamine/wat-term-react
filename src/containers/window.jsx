@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import TerminalLink from './terminal-link.jsx';
 
-const Window = ({ window, selected, onClick }) => {
+const Window = ({ window, index, selected, onClick }) => {
     return (
         <div className='window-box' onClick={() => onClick(window.id)} style={{
             width: window.width + '%',
@@ -16,7 +16,7 @@ const Window = ({ window, selected, onClick }) => {
                 <TerminalLink terminal={window.terminal} selected={selected}/>
             </div>
             <div className='window-info'>
-                <span>{window.id}</span>
+                <span>{index} ({window.id})</span>
                 <span style={{ float: 'right' }}>
                     {window.x}, {window.y}, {window.width}, {window.height}
                 </span>
@@ -27,6 +27,7 @@ const Window = ({ window, selected, onClick }) => {
 
 Window.propTypes = {
     window: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired
 };

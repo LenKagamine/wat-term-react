@@ -10,6 +10,7 @@ const Workspace = ({ workspace, currentWindowId }) => {
         windows.push(
             <Window
                 key={workspace.windows[i].id}
+                index={i}
                 window={workspace.windows[i]}
                 selected={workspace.windows[i].id === currentWindowId}
             />

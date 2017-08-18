@@ -1,8 +1,8 @@
 import { createWindow } from '../constants';
 
+/* Shift */
 // the following commands either returns a list of windows that are exact
 //   borders of the given index, or false if there are none
-
 function borderingComp(index, windows, borderingComp, boundaryComp1, boundaryComp2) {
     var borderingWindows = [];
     const a = windows[index];
@@ -75,6 +75,23 @@ function getChangeMatrix(edge, c) {
     }
 }
 
+/* Merge */
+function merge(a, b) {
+    if (a.x === b.x && a.width === b.width && (a.y + a.height === b.y || b.y + b.height === a.y)) {
+        // vertical merge
+        a.y = Math.min(a.y, b.y);
+        a.height += b.height;
+        return true;
+    }
+    else if (a.y === b.y && a.height === b.height && (a.x + a.width === b.x || b.x + b.width === a.x)) {
+        // horizontal merge
+        a.x = Math.min(a.x, b.x);
+        a.width += b.width;
+        return true;
+    }
+    return false;
+}
+
 
 
 function run(state, params, windowId) {
@@ -115,48 +132,61 @@ function run(state, params, windowId) {
         }
     }
     else if (params.length === 2) {
-        var result;
-        if (params[0] === 'left') {
-            result = getBorderingLeft(windowId, workspace.windows);
+        if (params[0] === 'merge') {
+            if (params[1] >= 0 && params[1] < workspace.windows.length &&
+                merge(workspace.windows[windowId], workspace.windows[parseInt(params[1])])) {
+                workspace.windows.splice(params[1], 1);
+            }
+            else {
+                terminal.output.push({
+                    text: 'window: Cannot merge ' + params[1],
+                    prompt: false
+                });
+            }
         }
-        else if (params[0] === 'right') {
-            result = getBorderingRight(windowId, workspace.windows);
-        }
-        else if (params[0] === 'top') {
-            result = getBorderingTop(windowId, workspace.windows);
-        }
-        else if (params[0] === 'bottom') {
-            result = getBorderingBottom(windowId, workspace.windows);
+        else if (params[0] === 'left' || params[0] === 'right' || params[0] === 'top' || params[0] === 'bottom') {
+            var result;
+            if (params[0] === 'left') {
+                result = getBorderingLeft(windowId, workspace.windows);
+            }
+            else if (params[0] === 'right') {
+                result = getBorderingRight(windowId, workspace.windows);
+            }
+            else if (params[0] === 'top') {
+                result = getBorderingTop(windowId, workspace.windows);
+            }
+            else if (params[0] === 'bottom') {
+                result = getBorderingBottom(windowId, workspace.windows);
+            }
+
+            if (!result) {
+                terminal.output.push({
+                    text: 'window: Cannot shift ' + params[1] + ' border',
+                    prompt: false
+                });
+            }
+            else {
+                const change = params[1] === '+' ? 1 :
+                               params[1] === '-' ? -1 :
+                               parseInt(params[1]);
+
+                const c = getChangeMatrix(params[0], change);
+                currWindow.x += c[0];
+                currWindow.y += c[1];
+                currWindow.width += c[2];
+                currWindow.height += c[3];
+                result.map(function(id) {
+                    workspace.windows[id].x += c[4];
+                    workspace.windows[id].y += c[5];
+                    workspace.windows[id].width += c[6];
+                    workspace.windows[id].height += c[7];
+                });
+            }
         }
         else {
             terminal.output.push({
-                text: 'window: Unknown parameter ' + params[1],
+                text: 'window: Unknown parameter ' + params[0],
                 prompt: false
-            });
-            return state;
-        }
-
-        if (!result) {
-            terminal.output.push({
-                text: 'window: Cannot shift ' + params[1] + ' border',
-                prompt: false
-            });
-        }
-        else {
-            const change = params[1] === '+' ? 1 :
-                           params[1] === '-' ? -1 :
-                           parseInt(params[1]);
-
-            const c = getChangeMatrix(params[0], change);
-            currWindow.x += c[0];
-            currWindow.y += c[1];
-            currWindow.width += c[2];
-            currWindow.height += c[3];
-            result.map(function(id) {
-                workspace.windows[id].x += c[4];
-                workspace.windows[id].y += c[5];
-                workspace.windows[id].width += c[6];
-                workspace.windows[id].height += c[7];
             });
         }
     }

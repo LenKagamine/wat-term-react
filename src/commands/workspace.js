@@ -1,22 +1,9 @@
+import { createWorkspace } from '../constants';
+
 function run(state, params, terminal) {
     if (params.length === 1) {
         if (params[0] === 'add') {
-            state.workspaces.push({
-                windows: [{
-                    x: 0,
-                    y: 0,
-                    width: 100,
-                    height: 100,
-                    id: +new Date(),
-                    terminal: {
-                        history: [''],
-                        inProg: false,
-                        output: [],
-                        runningCommand: '',
-                        workingDirectory: '~'
-                    }
-                }]
-            });
+            state.workspaces.push(createWorkspace());
         }
         else {
             terminal.output.push({

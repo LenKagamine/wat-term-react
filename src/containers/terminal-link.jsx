@@ -75,7 +75,7 @@ class TerminalLink extends React.Component {
                 cursor: this.state.cursor - 1
             });
         }
-        else if(e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) {
+        else if(e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
             this.props.updateCommand(
                 command.slice(0, this.state.cursor) + e.key + command.slice(this.state.cursor),
                 this.state.historyIndex

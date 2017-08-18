@@ -1,24 +1,9 @@
-import Constants from './constants';
+import Constants, { createWorkspace } from './constants';
 
 // INITIAL STATE
 const id = +new Date();
 const defaultStateObject = { [Constants.STATE_KEY]: {
-    workspaces: [{
-        windows: [{
-            x: 0,
-            y: 0,
-            width: 100,
-            height: 100,
-            id: id,
-            terminal: {
-                history: [''],
-                inProg: false,
-                output: [],
-                runningCommand: '',
-                workingDirectory: '~'
-            }
-        }]
-    }],
+    workspaces: [createWorkspace()],
     wfs: {
         type: Constants.DIR_TYPE,
         name: '~',

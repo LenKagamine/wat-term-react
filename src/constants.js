@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     // CONSTANTS
     STATE_KEY: 'state',
     DIR_TYPE: 'dir',
@@ -15,4 +15,31 @@ module.exports = {
     KEY_L: 76,
     KEY_ENTER: 13,
     KEY_BACKSPACE: 8
+};
+
+export const createTerminal = () => {
+    return {
+        history: [''],
+        inProg: false,
+        output: [],
+        runningCommand: '',
+        workingDirectory: '~'
+    };
+};
+
+export const createWindow = (x, y, width, height) => {
+    return {
+        x,
+        y,
+        width,
+        height,
+        id: +new Date(),
+        terminal: createTerminal()
+    };
+};
+
+export const createWorkspace = () => {
+    return {
+        windows: [createWindow(0, 0, 100, 100)]
+    };
 };

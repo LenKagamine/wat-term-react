@@ -1,4 +1,5 @@
-export default {
+/* Constants */
+const Constants = {
     // CONSTANTS
     STATE_KEY: 'state',
     DIR_TYPE: 'dir',
@@ -16,30 +17,46 @@ export default {
     KEY_ENTER: 13,
     KEY_BACKSPACE: 8
 };
+export default Constants;
 
-export const createTerminal = () => {
-    return {
-        history: [''],
-        inProg: false,
-        output: [],
-        runningCommand: '',
-        workingDirectory: '~'
-    };
-};
+/* Components */
 
-export const createWindow = (x, y, width, height) => {
-    return {
-        x,
-        y,
-        width,
-        height,
-        id: +new Date(),
-        terminal: createTerminal()
-    };
-};
+export const createTerminal = () => ({
+    history: [''],
+    inProg: false,
+    output: [],
+    runningCommand: '',
+    workingDirectory: '~'
+});
 
-export const createWorkspace = () => {
-    return {
-        windows: [createWindow(0, 0, 100, 100)]
-    };
-};
+export const createWindow = (x, y, width, height) => ({
+    x,
+    y,
+    width,
+    height,
+    id: +new Date(),
+    terminal: createTerminal()
+});
+
+export const createWorkspace = () => ({
+    windows: [createWindow(0, 0, 100, 100)]
+});
+
+/* File System */
+
+export const createDirectory = (name) => ({
+    type: Constants.DIR_TYPE,
+    name,
+    data: []
+});
+
+export const createFile = name => ({
+    type: Constants.FILE_TYPE,
+    name,
+    data: ''
+});
+
+export const createAlias = (alias, command) => ({
+    alias,
+    command
+});

@@ -74,9 +74,8 @@ html, body, #root {
 
 .workspace {
     position: relative;
-    width: 100%;
+    width: calc(100% - 10px);
     height: calc(100% - 30px); /* bottom bar height */
-    padding: 0 10px 10px 0;
 }
 
 /* Bottom Bar */

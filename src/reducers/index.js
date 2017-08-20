@@ -53,9 +53,9 @@ const rootReducer = function (state = {}, action) {
             const parts = action.text.trim().split(' ');
             return executeCommand(newState, parts[0], parts.slice(1));
         }
-        case 'STORAGE_CHANGED': {
-            return action.data;
-        }
+        // case 'STORAGE_CHANGED': {
+        //     return action.data;
+        // }
         default:
             return state;
     }

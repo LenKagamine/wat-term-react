@@ -49,9 +49,7 @@ const rootReducer = function (state = {}, action) {
                 prompt: true
             });
             newTerminal.history.push('');
-            // action.text
-            const parts = action.text.trim().split(' ');
-            return executeCommand(newState, parts[0], parts.slice(1));
+            return executeCommand(newState, action.text);
         }
         // case 'STORAGE_CHANGED': {
         //     return action.data;

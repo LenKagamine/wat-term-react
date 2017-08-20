@@ -18,7 +18,13 @@ function findWindow(state, id) {
     return -1;
 }
 
-function executeCommand(state, command, params) {
+function parseInput(text) {
+    return text.trim().match(/[^\s"']+|"([^"]*)"|'([^']*)'/g)
+                      .map(t => t.replace(/^"|"$/g, "").replace(/^'|'$/g, ""));
+}
+
+function executeCommand(state, text) {
+    const [command, ...params] = parseInput(text);
     console.log(command, params);
     const windowId = findWindow(state, state.selectedWindow);
     var terminal = state.workspaces[state.selectedWorkspace].windows[windowId].terminal;

@@ -6,6 +6,7 @@ import workspace from './workspace';
 import cd from './files/cd';
 import mkdir from './files/mkdir';
 import ls from './files/ls';
+import cat from './files/cat';
 
 function findWindow(state, id) {
     var windows = state.workspaces[state.selectedWorkspace].windows;
@@ -40,7 +41,8 @@ function executeCommand(state, command, params) {
             return ls(state, params, windowId);
         case 'mkdir':
             return mkdir(state, params, windowId);
-        // case 'cat':
+        case 'cat':
+            return cat(state, params, windowId);
         default:
             terminal.output.push({
                 text: command + ': command not found',

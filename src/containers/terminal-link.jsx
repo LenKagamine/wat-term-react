@@ -19,6 +19,17 @@ class TerminalLink extends React.Component {
         if (this.props.selected) {
             this.input.focus();
         }
+        this.input.addEventListener('paste', event => {
+            const clipboardData = event.clipboardData.getData("text/plain");
+            const command = this.getCurrentInputCommand();
+            this.props.updateCommand(
+                command.slice(0, this.state.cursor) + clipboardData + command.slice(this.state.cursor),
+                this.state.historyIndex
+            );
+            this.setState({
+                cursor: this.state.cursor + clipboardData.length
+            });
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -30,9 +41,14 @@ class TerminalLink extends React.Component {
         }
     }
 
-    handleKey(e) {
+    getCurrentInputCommand() {
         const history = this.props.terminal.history;
-        const command = history[this.state.historyIndex];
+        return history[this.state.historyIndex];
+    }
+
+    handleKey(e) {    
+        const history = this.props.terminal.history;
+        const command = this.getCurrentInputCommand();
 
         if (!this.props.selected || this.props.terminal.inProg) {
             return;

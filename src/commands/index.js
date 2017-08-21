@@ -74,8 +74,6 @@ function executeCommand(state, text) {
             xml.open('GET', path, false);
             xml.send(null);
             if (xml.status == 200) {
-                console.log(xml.responseText);
-                script.output('success');
                 script.terminal.inProg = true;
                 script.terminal.runningCommand = command;
                 script.terminal.params = params;

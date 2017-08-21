@@ -1,7 +1,7 @@
 import Constants, { createWorkspace } from './constants';
 
 // INITIAL STATE
-const id = +new Date();
+const id = Date.now();
 const defaultStateObject = { [Constants.STATE_KEY]: {
     workspaces: [createWorkspace()],
     wfs: {

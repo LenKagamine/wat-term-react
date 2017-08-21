@@ -5,41 +5,48 @@ import { connect } from 'react-redux';
 import TerminalLink from './terminal-link.jsx';
 import Constants from '../constants';
 
-const Window = ({ window, index, selected, onClick, env }) => {
-    const cacheParamValue = +new Date();
+class Window extends React.Component {
+    constructor(props) {
+        super(props);
+        this.cacheParamValue = Date.now();
+    }
 
-    return (
-        <div className='window-box' onClick={() => onClick(window.id)} style={{
-            width: window.width + '%',
-            height: window.height + '%',
-            left: window.x + '%',
-            top: window.y + '%'
-        }}>
+    render() {
+        const { window, index, selected, onClick, env } = this.props;
 
-        {window.terminal.inProg ?
-            <iframe
-                className='window-frame'
-                src={Constants.WAT_TERM_CONTENT_URL + window.terminal.runningCommand + '/index.html' +
-                    '?workingDirectory=' + window.terminal.workingDirectory +
-                    '&cache=' + cacheParamValue +
-                    '&id=' + window.id +
-                    '&env=' + encodeURIComponent(JSON.stringify(env)) +
-                    '&params=' + JSON.stringify(window.terminal.params)}
-            ></iframe>
-        :
-            <span>
-                <div className={'window' + (selected ? ' selected' : ' ')}>
-                    <TerminalLink terminal={window.terminal} selected={selected}/>
-                </div>
-                <div className='window-info'>
-                    <span>{index} ({window.id})</span>
-                    <span style={{ float: 'right' }}>
-                        {window.x}, {window.y}, {window.width}, {window.height}
-                    </span>
-                </div>
-            </span>}
-        </div>
-    );
+        return (
+            <div className='window-box' onClick={() => onClick(window.id)} style={{
+                width: window.width + '%',
+                height: window.height + '%',
+                left: window.x + '%',
+                top: window.y + '%'
+            }}>
+
+            {window.terminal.inProg ?
+                <iframe
+                    className='window-frame'
+                    src={Constants.WAT_TERM_CONTENT_URL + window.terminal.runningCommand + '/index.html' +
+                        '?workingDirectory=' + window.terminal.workingDirectory +
+                        '&cache=' + this.cacheParamValue +
+                        '&id=' + window.id +
+                        '&env=' + encodeURIComponent(JSON.stringify(env)) +
+                        '&params=' + JSON.stringify(window.terminal.params)}
+                ></iframe>
+            :
+                <span>
+                    <div className={'window' + (selected ? ' selected' : ' ')}>
+                        <TerminalLink terminal={window.terminal} selected={selected}/>
+                    </div>
+                    <div className='window-info'>
+                        <span>{index} ({window.id})</span>
+                        <span style={{ float: 'right' }}>
+                            {window.x}, {window.y}, {window.width}, {window.height}
+                        </span>
+                    </div>
+                </span>}
+            </div>
+        );
+    }
 };
 
 Window.propTypes = {

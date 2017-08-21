@@ -4,7 +4,7 @@ const Constants = {
     STATE_KEY: 'state',
     DIR_TYPE: 'dir',
     FILE_TYPE: 'file',
-    WAT_TERM_CONTENT_URL: 'http://wat-ter.ml/',
+    WAT_TERM_CONTENT_URL: 'http://localhost:7000/',
 
     // KEY CODES
     KEY_LEFT_ARROW: 37,
@@ -36,7 +36,7 @@ export const createWindow = (x, y, width, height) => ({
     y,
     width,
     height,
-    id: +new Date(),
+    id: Date.now(),
     terminal: createTerminal()
 });
 

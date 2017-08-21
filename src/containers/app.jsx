@@ -15,7 +15,8 @@ const App = ({ currentWorkspace, background }) => {
         <div style={{
             width: '100%',
             height: '100%',
-            background: bg
+            background: bg,
+            backgroundSize: 'cover'
         }}>
             <Workspace workspace={currentWorkspace}/>
             <BottomBar />

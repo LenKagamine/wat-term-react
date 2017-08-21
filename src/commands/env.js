@@ -1,5 +1,10 @@
 function run(state, params) {
-    if (params.length === 1) {
+    if (params.length === 0) {
+        Object.keys(state.wsh.env).forEach(e => {
+            this.output(e + ': ' + state.wsh.env[e], false, false);
+        });
+    }
+    else if (params.length === 1) {
         this.output(state.wsh.env[params[0]]);
     }
     else if (params.length === 2) {

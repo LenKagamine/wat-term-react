@@ -2,6 +2,7 @@ import { clear } from '../storage';
 import env from './env';
 import window from './window';
 import workspace from './workspace';
+import yum from './yum';
 
 import cd from './files/cd';
 import mkdir from './files/mkdir';
@@ -68,6 +69,8 @@ function executeCommand(state, text) {
             return script.execute(cat);
         case 'edit':
             return script.execute(edit);
+        case 'yum':
+            return script.execute(yum);
         default: {
             const path = Constants.WAT_TERM_CONTENT_URL + command + '/index.html';
             var xml = new XMLHttpRequest();

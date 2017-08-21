@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import TerminalLink from './terminal-link.jsx';
+import Constants from '../constants';
 
-const Window = ({ window, index, selected, onClick }) => {
+const Window = ({ window, index, selected, onClick, env }) => {
+    const cacheParamValue = +new Date();
+
     return (
         <div className='window-box' onClick={() => onClick(window.id)} style={{
             width: window.width + '%',
@@ -12,15 +15,29 @@ const Window = ({ window, index, selected, onClick }) => {
             left: window.x + '%',
             top: window.y + '%'
         }}>
-            <div className={'window' + (selected ? ' selected' : ' ')}>
-                <TerminalLink terminal={window.terminal} selected={selected}/>
-            </div>
-            <div className='window-info'>
-                <span>{index} ({window.id})</span>
-                <span style={{ float: 'right' }}>
-                    {window.x}, {window.y}, {window.width}, {window.height}
-                </span>
-            </div>
+
+        {window.terminal.inProg ?
+            <iframe
+                className='window-frame'
+                src={Constants.WAT_TERM_CONTENT_URL + window.terminal.runningCommand + '/index.html' +
+                    '?workingDirectory=' + window.terminal.workingDirectory +
+                    '&cache=' + cacheParamValue +
+                    '&id=' + window.id +
+                    '&env=' + encodeURIComponent(JSON.stringify(env)) +
+                    '&params=' + JSON.stringify(window.terminal.params)}
+            ></iframe>
+        :
+            <span>
+                <div className={'window' + (selected ? ' selected' : ' ')}>
+                    <TerminalLink terminal={window.terminal} selected={selected}/>
+                </div>
+                <div className='window-info'>
+                    <span>{index} ({window.id})</span>
+                    <span style={{ float: 'right' }}>
+                        {window.x}, {window.y}, {window.width}, {window.height}
+                    </span>
+                </div>
+            </span>}
         </div>
     );
 };
@@ -31,6 +48,12 @@ Window.propTypes = {
     selected: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired
 };
+
+const mapStateToProps = state => {
+    return {
+        env: state.wsh.env
+    }
+}
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -43,4 +66,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Window);
+export default connect(mapStateToProps, mapDispatchToProps)(Window);

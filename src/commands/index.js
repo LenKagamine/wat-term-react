@@ -8,6 +8,8 @@ import mkdir from './files/mkdir';
 import ls from './files/ls';
 import cat from './files/cat';
 
+import Constants from '../constants';
+
 function findWindow(state, id) {
     var windows = state.workspaces[state.selectedWorkspace].windows;
     for(var i = 0; i < windows.length; i++) {
@@ -65,9 +67,23 @@ function executeCommand(state, text) {
             return script.execute(mkdir);
         case 'cat':
             return script.execute(cat);
-        default:
-            script.output('command not found');
+        default: {
+            const path = Constants.WAT_TERM_CONTENT_URL + command + '/index.html';
+            var xml = new XMLHttpRequest();
+            xml.open('GET', path, false);
+            xml.send(null);
+            if (xml.status == 200) {
+                console.log(xml.responseText);
+                script.output('success');
+                script.terminal.inProg = true;
+                script.terminal.runningCommand = command;
+                script.terminal.params = params;
+            }
+            else {
+                script.output('command not found');
+            }
             return state;
+        }
     }
     return state;
 }

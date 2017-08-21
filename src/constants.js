@@ -4,6 +4,7 @@ const Constants = {
     STATE_KEY: 'state',
     DIR_TYPE: 'dir',
     FILE_TYPE: 'file',
+    WAT_TERM_CONTENT_URL: 'http://wat-ter.ml/',
 
     // KEY CODES
     KEY_LEFT_ARROW: 37,
@@ -26,6 +27,7 @@ export const createTerminal = () => ({
     inProg: false,
     output: [],
     runningCommand: '',
+    params: [],
     workingDirectory: '~'
 });
 

@@ -21,7 +21,9 @@ function findWindow(state, id) {
 const rootReducer = function (state = {}, action) {
     if (action.type !== 'UPDATE_COMMAND') console.log(action);
     var newState = JSON.parse(JSON.stringify(state));
+
     const index = findWindow(newState, newState.selectedWindow);
+    var newTerminal = newState.workspaces[newState.selectedWorkspace].windows[index].terminal;
 
     switch(action.type) {
         case 'SELECT_WINDOW': {
@@ -35,11 +37,10 @@ const rootReducer = function (state = {}, action) {
         }
         case 'UPDATE_COMMAND': {
             // Split into smaller reducers later
-            newState.workspaces[newState.selectedWorkspace].windows[index].terminal.history[action.index] = action.text;
+            newTerminal.history[action.index] = action.text;
             return newState;
         }
         case 'EXECUTE_COMMAND': {
-            var newTerminal = newState.workspaces[newState.selectedWorkspace].windows[index].terminal;
             newTerminal.history[newTerminal.history.length - 1] = action.text;
             newTerminal.history.push('');
 
@@ -49,6 +50,17 @@ const rootReducer = function (state = {}, action) {
             });
 
             return executeCommand(newState, action.text);
+        }
+        case 'KILL_SCRIPT': {
+            var scriptIndex = findWindow(newState, parseInt(action.id));
+            newState.workspaces[newState.selectedWorkspace].windows[scriptIndex].terminal.inProg = false;
+            // windowObj.terminal.runningCommand = command;
+            // windowObj.terminal.params = params;
+            return newState;
+        }
+        case 'SET_ENV': {
+            newState.wsh.env[action.key] = action.value;
+            return newState;
         }
         // case 'STORAGE_CHANGED': {
         //     return action.data;

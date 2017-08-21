@@ -43,7 +43,7 @@ function getDirectory(directory, currDir) {
     return [currDir, path];
 }
 
-function run(state, params, windowId) {
+function run(state, params) {
     if (params.length === 1) {
         if (getDirectory(this.terminal.workingDirectory + '/' + params[0], state.wfs)) {
             this.output(params[0] + ': Directory already exists');

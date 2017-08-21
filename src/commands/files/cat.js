@@ -63,7 +63,7 @@ function getFile(path, currDir) {
     return false;
 }
 
-function run(state, params, windowId) {
+function run(state, params) {
     if (params.length === 1) {
         const navResult = getFile(this.terminal.workingDirectory + "/" + params[0], state.wfs);
         if (navResult === false) {

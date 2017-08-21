@@ -1,6 +1,6 @@
 import { createWindow } from '../../constants';
 
-function run(state, params, windowId) {
+function run(state, params) {
     if (params[0] === 'vs') {
         const sharedWidth = this.currWindow.width;
         this.currWindow.width = Math.floor(sharedWidth / 2);

@@ -43,7 +43,7 @@ function getDirectory(directory, currDir) {
     return [currDir, path];
 }
 
-function run(state, params, windowId) {
+function run(state, params) {
     const workingDirectory = getDirectory(this.terminal.workingDirectory, state.wfs)[0];
 
     if (workingDirectory.data.length === 0) {

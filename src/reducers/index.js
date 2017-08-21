@@ -20,28 +20,25 @@ function findWindow(state, id) {
 
 const rootReducer = function (state = {}, action) {
     if (action.type !== 'UPDATE_COMMAND') console.log(action);
+    var newState = JSON.parse(JSON.stringify(state));
+    const index = findWindow(newState, newState.selectedWindow);
+
     switch(action.type) {
         case 'SELECT_WINDOW': {
-            var newState = JSON.parse(JSON.stringify(state));
             newState.selectedWindow = action.id;
             return newState;
         }
         case 'SELECT_WORKPLACE': {
-            var newState = JSON.parse(JSON.stringify(state));
             newState.selectedWorkspace = action.id;
             newState.selectedWindow = newState.workspaces[action.id].windows[0].id;
             return newState;
         }
         case 'UPDATE_COMMAND': {
             // Split into smaller reducers later
-            var newState = JSON.parse(JSON.stringify(state));
-            const index = findWindow(newState, newState.selectedWindow);
             newState.workspaces[newState.selectedWorkspace].windows[index].terminal.history[action.index] = action.text;
             return newState;
         }
         case 'EXECUTE_COMMAND': {
-            var newState = JSON.parse(JSON.stringify(state));
-            const index = findWindow(newState, newState.selectedWindow);
             var newTerminal = newState.workspaces[newState.selectedWorkspace].windows[index].terminal;
             newTerminal.history[newTerminal.history.length - 1] = action.text;
             newTerminal.history.push('');

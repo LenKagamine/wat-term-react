@@ -2,7 +2,7 @@ import merge from './merge';
 import split from './split';
 import shift from './shift';
 
-function run(state, params, windowId) {
+function run(state, params) {
     switch(params[0]) {
         case 'vs':
         case 'hs':

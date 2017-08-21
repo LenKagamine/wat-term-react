@@ -15,9 +15,9 @@ function merge(a, b) {
     return false;
 }
 
-function run(state, params, windowId) {
+function run(state, params, windowIndex) {
     if (params[1] >= 0 && params[1] < this.workspace.windows.length &&
-        merge(this.workspace.windows[windowId], this.workspace.windows[parseInt(params[1])])) {
+        merge(this.workspace.windows[windowIndex], this.workspace.windows[parseInt(params[1])])) {
         this.workspace.windows.splice(params[1], 1);
     }
     else {

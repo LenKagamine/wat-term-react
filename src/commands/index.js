@@ -24,9 +24,9 @@ function parseInput(text) {
 }
 
 function Script(state, command, params) {
-    this.windowId = findWindow(state, state.selectedWindow);
+    this.windowIndex = findWindow(state, state.selectedWindow);
     this.workspace = state.workspaces[state.selectedWorkspace];
-    this.currWindow = this.workspace.windows[this.windowId];
+    this.currWindow = this.workspace.windows[this.windowIndex];
     this.terminal = this.currWindow.terminal;
     this.output = function(text, showPrompt = false, showCommand = true) {
         this.terminal.output.push({
@@ -35,14 +35,13 @@ function Script(state, command, params) {
         });
     }
     this.execute = function(run) {
-        return run.call(this, state, params, this.windowId);
+        return run.call(this, state, params, this.windowIndex);
     }
 }
 
 function executeCommand(state, text) {
     const [command, ...params] = parseInput(text);
     console.log(command, params);
-    const windowId = findWindow(state, state.selectedWindow);
 
     var script = new Script(state, command, params);
 
@@ -50,7 +49,7 @@ function executeCommand(state, text) {
         case 'reset':
             return clear();
         case 'clear':
-            state.workspaces[state.selectedWorkspace].windows[windowId].terminal.output = [];
+            script.terminal.output = [];
             return state;
         case 'env':
             return script.execute(env);

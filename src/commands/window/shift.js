@@ -73,20 +73,19 @@ function getChangeMatrix(edge, c) {
     }
 }
 
-function run(state, params, windowId) {
-    console.log(this);
+function run(state, params, windowIndex) {
     var result;
     if (params[0] === 'left') {
-        result = getBorderingLeft(windowId, this.workspace.windows);
+        result = getBorderingLeft(windowIndex, this.workspace.windows);
     }
     else if (params[0] === 'right') {
-        result = getBorderingRight(windowId, this.workspace.windows);
+        result = getBorderingRight(windowIndex, this.workspace.windows);
     }
     else if (params[0] === 'top') {
-        result = getBorderingTop(windowId, this.workspace.windows);
+        result = getBorderingTop(windowIndex, this.workspace.windows);
     }
     else if (params[0] === 'bottom') {
-        result = getBorderingBottom(windowId, this.workspace.windows);
+        result = getBorderingBottom(windowIndex, this.workspace.windows);
     }
 
     if (result) {

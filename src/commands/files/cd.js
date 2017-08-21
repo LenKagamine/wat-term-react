@@ -43,7 +43,7 @@ function getDirectory(directory, currDir) {
     return [currDir, path];
 }
 
-function run(state, params, windowId) {
+function run(state, params) {
     if (params.length === 0) {
         this.terminal.workingDirectory = '~';
     }

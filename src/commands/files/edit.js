@@ -64,29 +64,23 @@ function getFile(path, currDir) {
 }
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-    var workingDirectory = getDirectory(terminal.workingDirectory, state.wfs)[0];
+    var workingDirectory = getDirectory(this.terminal.workingDirectory, state.wfs)[0];
 
-    if (params.length !== 1) {
-        terminal.output.push({
-            text: 'edit: Incorrect number of parameters',
-            prompt: false
-        });
-    }
-    else {
-        var path = terminal.workingDirectory + "/" + params[0];
+    if (params.length === 1) {
+        var path = this.terminal.workingDirectory + '/' + params[0];
         var navResult = getFile(path, state.wfs);
-        var text = "";
+        var text = '';
         if (navResult === false) {
             createFile(params[0]);
         }
         else {
             text = navResult[0].data;
         }
-        var result = window.prompt("Editing " + path + ":", text);
+        var result = window.prompt('Editing' + path + ':', text);
         getFile(path, state.wfs)[0].data = result;
+    }
+    else {
+        this.output('Incorrect number of parameters', false);
     }
 
     return state;

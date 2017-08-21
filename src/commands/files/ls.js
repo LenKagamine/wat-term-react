@@ -55,8 +55,8 @@ function run(state, params) {
     for (var i = 0; i < workingDirectory.data.length; i++) {
         this.output(
             (workingDirectory.data[i].type === Constants.DIR_TYPE ?
-                'FILE    ' :
-                'DIR     ') + workingDirectory.data[i].name, false, false);
+                'DIR     ' :
+                'FILE    ') + workingDirectory.data[i].name, false, false);
     }
 
     return state;

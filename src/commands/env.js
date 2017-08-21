@@ -1,18 +1,12 @@
-function run(state, params, terminal) {
+function run(state, params) {
     if (params.length === 1) {
-        terminal.output.push({
-            text: state.wsh.env[params[0]],
-            prompt: false
-        });
+        this.output(state.wsh.env[params[0]]);
     }
     else if (params.length === 2) {
         state.wsh.env[params[0]] = params[1];
     }
     else {
-        terminal.output.push({
-            text: 'env: Incorrect number of parameters',
-            prompt: false
-        });
+        this.output('Incorrect number of parameters');
     }
     return state;
 }

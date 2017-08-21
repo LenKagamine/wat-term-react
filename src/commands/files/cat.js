@@ -64,31 +64,17 @@ function getFile(path, currDir) {
 }
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-    
-    if (params.length !== 1) {
-        terminal.output.push({
-            text: 'cat: Incorrect number of parameters',
-            prompt: false
-        });
-    }
-    else {
-        var navResult = getFile(terminal.workingDirectory + "/" + params[0], 
-            state.wfs);
+    if (params.length === 1) {
+        const navResult = getFile(this.terminal.workingDirectory + "/" + params[0], state.wfs);
         if (navResult === false) {
-            terminal.output.push({
-                text: 'cat: ' + params[0] + ' was not found',
-                prompt: false
-            });
+            this.output(params[0] + ' was not found');
         }
         else {
-            terminal.output.push({
-                text: navResult[0].data,
-                prompt: false
-            });
+            this.output(navResult[0].data, false, false);
         }
+    }
+    else {
+        this.output('Incorrect number of parameters');
     }
 
     return state;

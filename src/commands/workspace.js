@@ -1,15 +1,12 @@
 import { createWorkspace } from '../constants';
 
-function run(state, params, terminal) {
+function run(state, params) {
     if (params.length === 1) {
         if (params[0] === 'add') {
             state.workspaces.push(createWorkspace());
         }
         else {
-            terminal.output.push({
-                text: 'workspace: Unknown parameter ' + params[0],
-                prompt: false
-            });
+            this.output('Unknown parameter ' + params[0]);
         }
     }
     else if (params.length === 2) {
@@ -17,17 +14,11 @@ function run(state, params, terminal) {
             state.workspaces.splice(params[1], 1);
         }
         else {
-            terminal.output.push({
-                text: 'workspace: Unknown parameter ' + params[0],
-                prompt: false
-            });
+            this.output('Unknown parameter ' + params[0]);
         }
     }
     else {
-        terminal.output.push({
-            text: 'env: Incorrect number of parameters',
-            prompt: false
-        });
+        this.output('Incorrect number of parameters');
     }
     return state;
 }

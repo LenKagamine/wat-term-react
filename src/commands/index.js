@@ -23,37 +23,51 @@ function parseInput(text) {
                       .map(t => t.replace(/^"|"$/g, "").replace(/^'|'$/g, ""));
 }
 
+function Script(state, command, params) {
+    this.windowId = findWindow(state, state.selectedWindow);
+    this.workspace = state.workspaces[state.selectedWorkspace];
+    this.currWindow = this.workspace.windows[this.windowId];
+    this.terminal = this.currWindow.terminal;
+    this.output = function(text, showPrompt = false, showCommand = true) {
+        this.terminal.output.push({
+            text: (showCommand ? command + ': ' : '') + text,
+            prompt: (showPrompt ? this.terminal.workingDirectory : '')
+        });
+    }
+    this.execute = function(run) {
+        return run.call(this, state, params, this.windowId);
+    }
+}
+
 function executeCommand(state, text) {
     const [command, ...params] = parseInput(text);
     console.log(command, params);
     const windowId = findWindow(state, state.selectedWindow);
-    var terminal = state.workspaces[state.selectedWorkspace].windows[windowId].terminal;
+
+    var script = new Script(state, command, params);
 
     switch(command) {
         case 'reset':
             return clear();
         case 'clear':
-            terminal.output = [];
+            state.workspaces[state.selectedWorkspace].windows[windowId].terminal.output = [];
             return state;
         case 'env':
-            return env(state, params, terminal);
+            return script.execute(env);
         case 'window':
-            return window(state, params, windowId);
+            return script.execute(window);
         case 'workspace':
-            return workspace(state, params, terminal);
+            return script.execute(workspace);
         case 'cd':
-            return cd(state, params, windowId);
+            return script.execute(cd);
         case 'ls':
-            return ls(state, params, windowId);
+            return script.execute(ls);
         case 'mkdir':
-            return mkdir(state, params, windowId);
+            return script.execute(mkdir);
         case 'cat':
-            return cat(state, params, windowId);
+            return script.execute(cat);
         default:
-            terminal.output.push({
-                text: command + ': command not found',
-                prompt: false
-            });
+            script.output('command not found');
             return state;
     }
     return state;

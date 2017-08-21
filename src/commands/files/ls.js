@@ -44,32 +44,19 @@ function getDirectory(directory, currDir) {
 }
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-    var workingDirectory = getDirectory(terminal.workingDirectory, state.wfs)[0];
+    const workingDirectory = getDirectory(this.terminal.workingDirectory, state.wfs)[0];
 
     if (workingDirectory.data.length === 0) {
-        terminal.output.push({
-            text: 'ls: Directory is empty',
-            prompt: false
-        });
+        this.output('Directory is empty');
     }
     else {
-        terminal.output.push({
-            text: 'ls: Directory listing for ' + terminal.workingDirectory,
-            prompt: false
-        });
+        this.output('Directory listing for ' + this.terminal.workingDirectory);
     }
     for (var i = 0; i < workingDirectory.data.length; i++) {
-        var prefix = "FILE    ";
-        if (workingDirectory.data[i].type === Constants.DIR_TYPE) {
-            prefix = "DIR     ";
-        }
-        terminal.output.push({
-            text: prefix + ' ' + workingDirectory.data[i].name,
-            prompt: false
-        });
+        this.output(
+            (workingDirectory.data[i].type === Constants.DIR_TYPE ?
+                'FILE    ' :
+                'DIR     ') + workingDirectory.data[i].name, false, false);
     }
 
     return state;

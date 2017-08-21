@@ -16,19 +16,12 @@ function merge(a, b) {
 }
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-
-    if (params[1] >= 0 && params[1] < workspace.windows.length &&
-        merge(workspace.windows[windowId], workspace.windows[parseInt(params[1])])) {
-        workspace.windows.splice(params[1], 1);
+    if (params[1] >= 0 && params[1] < this.workspace.windows.length &&
+        merge(this.workspace.windows[windowId], this.workspace.windows[parseInt(params[1])])) {
+        this.workspace.windows.splice(params[1], 1);
     }
     else {
-        terminal.output.push({
-            text: 'window: Cannot merge ' + params[1],
-            prompt: false
-        });
+        this.output('Cannot merge ' + params[1]);
     }
     return state;
 }

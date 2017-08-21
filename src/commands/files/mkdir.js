@@ -44,26 +44,16 @@ function getDirectory(directory, currDir) {
 }
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-
     if (params.length === 1) {
-        if (getDirectory(terminal.workingDirectory + '/' + params[0], state.wfs)) {
-            terminal.output.push({
-                text: 'mkdir: ' + params[0] + ': Directory already exists',
-                prompt: false
-            });
+        if (getDirectory(this.terminal.workingDirectory + '/' + params[0], state.wfs)) {
+            this.output(params[0] + ': Directory already exists');
         }
         else {
-            getDirectory(terminal.workingDirectory, state.wfs)[0].data.push(createDirectory(params[0]));
+            getDirectory(this.terminal.workingDirectory, state.wfs)[0].data.push(createDirectory(params[0]));
         }
     }
     else {
-        terminal.output.push({
-            text: 'mkdir: Incorrect number of parameters',
-            prompt: false
-        });
+        this.output('Incorrect number of parameters');
     }
 
     return state;

@@ -44,30 +44,20 @@ function getDirectory(directory, currDir) {
 }
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-
     if (params.length === 0) {
-        terminal.workingDirectory = '~';
+        this.terminal.workingDirectory = '~';
     }
     else if (params.length === 1) {
-        const navResult = getDirectory(terminal.workingDirectory + '/' + params[0], state.wfs);
+        const navResult = getDirectory(this.terminal.workingDirectory + '/' + params[0], state.wfs);
         if (navResult) {
-            terminal.workingDirectory = navResult[1];
+            this.terminal.workingDirectory = navResult[1];
         }
         else {
-            terminal.output.push({
-                text: 'cd: No such directory ' + params[0],
-                prompt: false
-            });
+            this.output('No such directory ' + params[0]);
         }
     }
     else {
-        terminal.output.push({
-            text: 'cd: Incorrect number of parameters',
-            prompt: false
-        });
+        this.output('Incorrect number of parameters');
     }
 
     return state;

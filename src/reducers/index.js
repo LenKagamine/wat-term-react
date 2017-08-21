@@ -44,11 +44,13 @@ const rootReducer = function (state = {}, action) {
             const index = findWindow(newState, newState.selectedWindow);
             var newTerminal = newState.workspaces[newState.selectedWorkspace].windows[index].terminal;
             newTerminal.history[newTerminal.history.length - 1] = action.text;
+            newTerminal.history.push('');
+
             newTerminal.output.push({
                 text: action.text,
-                prompt: true
+                prompt: state.wsh.env.prompt.replace('%w', newTerminal.workingDirectory)
             });
-            newTerminal.history.push('');
+
             return executeCommand(newState, action.text);
         }
         // case 'STORAGE_CHANGED': {

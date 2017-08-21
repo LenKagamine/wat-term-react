@@ -10,7 +10,7 @@ const Terminal = ({output, command, cursor, prompt, selected}) => {
     for (var i = 0; i < output.length; i++) {
         formatOutput.push(
             <p key={i + '_' + output[i].text}>
-                {output[i].prompt && <span className='prompt'>{prompt}</span>}
+                <span className='prompt'>{'' + output[i].prompt}</span>
                 {output[i].text}
             </p>
         )

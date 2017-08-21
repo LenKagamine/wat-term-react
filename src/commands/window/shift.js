@@ -74,22 +74,19 @@ function getChangeMatrix(edge, c) {
 }
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-
+    console.log(this);
     var result;
     if (params[0] === 'left') {
-        result = getBorderingLeft(windowId, workspace.windows);
+        result = getBorderingLeft(windowId, this.workspace.windows);
     }
     else if (params[0] === 'right') {
-        result = getBorderingRight(windowId, workspace.windows);
+        result = getBorderingRight(windowId, this.workspace.windows);
     }
     else if (params[0] === 'top') {
-        result = getBorderingTop(windowId, workspace.windows);
+        result = getBorderingTop(windowId, this.workspace.windows);
     }
     else if (params[0] === 'bottom') {
-        result = getBorderingBottom(windowId, workspace.windows);
+        result = getBorderingBottom(windowId, this.workspace.windows);
     }
 
     if (result) {
@@ -98,22 +95,19 @@ function run(state, params, windowId) {
                        parseInt(params[1]);
 
         const c = getChangeMatrix(params[0], change);
-        currWindow.x += c[0];
-        currWindow.y += c[1];
-        currWindow.width += c[2];
-        currWindow.height += c[3];
-        result.map(function(id) {
-            workspace.windows[id].x += c[4];
-            workspace.windows[id].y += c[5];
-            workspace.windows[id].width += c[6];
-            workspace.windows[id].height += c[7];
+        this.currWindow.x += c[0];
+        this.currWindow.y += c[1];
+        this.currWindow.width += c[2];
+        this.currWindow.height += c[3];
+        result.map(id => {
+            this.workspace.windows[id].x += c[4];
+            this.workspace.windows[id].y += c[5];
+            this.workspace.windows[id].width += c[6];
+            this.workspace.windows[id].height += c[7];
         });
     }
     else {
-        terminal.output.push({
-            text: 'window: Cannot shift ' + params[1] + ' border',
-            prompt: false
-        });
+        this.output('Cannot shift ' + params[1] + ' border');
     }
     return state;
 }

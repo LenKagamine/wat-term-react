@@ -1,30 +1,26 @@
 import { createWindow } from '../../constants';
 
 function run(state, params, windowId) {
-    var workspace = state.workspaces[state.selectedWorkspace];
-    var currWindow = workspace.windows[windowId];
-    var terminal = currWindow.terminal;
-
     if (params[0] === 'vs') {
-        const sharedWidth = currWindow.width;
-        currWindow.width = Math.floor(sharedWidth / 2);
-        workspace.windows.push(
+        const sharedWidth = this.currWindow.width;
+        this.currWindow.width = Math.floor(sharedWidth / 2);
+        this.workspace.windows.push(
             createWindow(
-                currWindow.x + currWindow.width,
-                currWindow.y,
+                this.currWindow.x + this.currWindow.width,
+                this.currWindow.y,
                 Math.ceil(sharedWidth / 2),
-                currWindow.height
+                this.currWindow.height
             )
         );
     }
     else if (params[0] === 'hs') {
-        const sharedHeight = currWindow.height;
-        currWindow.height = Math.floor(sharedHeight / 2);
-        workspace.windows.push(
+        const sharedHeight = this.currWindow.height;
+        this.currWindow.height = Math.floor(sharedHeight / 2);
+        this.workspace.windows.push(
             createWindow(
-                currWindow.x,
-                currWindow.y + currWindow.height,
-                currWindow.width,
+                this.currWindow.x,
+                this.currWindow.y + this.currWindow.height,
+                this.currWindow.width,
                 Math.ceil(sharedHeight / 2)
             )
         );

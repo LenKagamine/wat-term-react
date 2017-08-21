@@ -1,4 +1,4 @@
-import Constants from '../../constants';
+import Constants, {createFile} from '../../constants';
 
 function getDirectory(directory, currDir) {
     var parts = directory.split('/');
@@ -63,18 +63,30 @@ function getFile(path, currDir) {
     return false;
 }
 
-function run(state, params) {
-    if (params.length === 1) {
-        const navResult = getFile(this.terminal.workingDirectory + "/" + params[0], state.wfs);
-        if (navResult === false) {
-            this.output(params[0] + ' was not found');
-        }
-        else {
-            this.output(navResult[0].data, false, false);
-        }
+function run(state, params, windowId) {
+    var workspace = state.workspaces[state.selectedWorkspace];
+    var currWindow = workspace.windows[windowId];
+    var terminal = currWindow.terminal;
+    var workingDirectory = getDirectory(terminal.workingDirectory, state.wfs)[0];
+
+    if (params.length !== 1) {
+        terminal.output.push({
+            text: 'edit: Incorrect number of parameters',
+            prompt: false
+        });
     }
     else {
-        this.output('Incorrect number of parameters');
+        var path = terminal.workingDirectory + "/" + params[0];
+        var navResult = getFile(path, state.wfs);
+        var text = "";
+        if (navResult === false) {
+            createFile(params[0]);
+        }
+        else {
+            text = navResult[0].data;
+        }
+        var result = window.prompt("Editing " + path + ":", text);
+        getFile(path, state.wfs)[0].data = result;
     }
 
     return state;

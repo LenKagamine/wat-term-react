@@ -7,6 +7,7 @@ import cd from './files/cd';
 import mkdir from './files/mkdir';
 import ls from './files/ls';
 import cat from './files/cat';
+import edit from './files/edit';
 
 import Constants from '../constants';
 
@@ -44,9 +45,7 @@ function Script(state, command, params) {
 function executeCommand(state, text) {
     const [command, ...params] = parseInput(text);
     console.log(command, params);
-
     var script = new Script(state, command, params);
-
     switch(command) {
         case 'reset':
             return clear();
@@ -67,6 +66,8 @@ function executeCommand(state, text) {
             return script.execute(mkdir);
         case 'cat':
             return script.execute(cat);
+        case 'edit':
+            return script.execute(edit);
         default: {
             const path = Constants.WAT_TERM_CONTENT_URL + command + '/index.html';
             var xml = new XMLHttpRequest();

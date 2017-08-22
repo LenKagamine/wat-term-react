@@ -15,6 +15,7 @@ const Terminal = ({output, command, cursor, prompt, selected}) => {
             </p>
         )
     }
+
     return (
         <div className='terminal'>
             <div className='terminal-text'>

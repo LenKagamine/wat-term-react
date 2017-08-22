@@ -33,7 +33,7 @@ export const createWindow = (x, y, width, height) => ({
     y,
     width,
     height,
-    id: +new Date(),
+    id: Date.now(),
     terminal: createTerminal()
 });
 

@@ -20,14 +20,6 @@ class TerminalLink extends React.Component {
             this.input.focus();
         }
         this.input.scrollTop = this.input.scrollHeight;
-    }
-
-    componentDidUpdate() {
-        this.startSmoothScroll(500, function(x) {
-            // return (1 - Math.cos(Math.PI * x)) / 2;
-            // return Math.cbrt(x - 0.5) / 1.585 + 0.5;
-            return 3*x*x - 2*x*x*x;
-        });
 
         this.input.addEventListener('paste', event => {
             const clipboardData = event.clipboardData.getData("text/plain");
@@ -39,6 +31,14 @@ class TerminalLink extends React.Component {
             this.setState({
                 cursor: this.state.cursor + clipboardData.length
             });
+        });
+    }
+
+    componentDidUpdate() {
+        this.startSmoothScroll(500, function(x) {
+            // return (1 - Math.cos(Math.PI * x)) / 2;
+            // return Math.cbrt(x - 0.5) / 1.585 + 0.5;
+            return 3*x*x - 2*x*x*x;
         });
     }
 
@@ -130,7 +130,7 @@ class TerminalLink extends React.Component {
                 cursor: this.state.cursor - 1
             });
         }
-        else if(e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        else if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
             this.props.updateCommand(
                 command.slice(0, this.state.cursor) + e.key + command.slice(this.state.cursor),
                 this.state.historyIndex

@@ -11,7 +11,6 @@ const Constants = {
     KEY_UP_ARROW: 38,
     KEY_RIGHT_ARROW: 39,
     KEY_DOWN_ARROW: 40,
-    KEY_V: 86,
     KEY_ENTER: 13,
     KEY_BACKSPACE: 8
 };

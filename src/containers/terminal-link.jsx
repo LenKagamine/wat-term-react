@@ -52,22 +52,27 @@ class TerminalLink extends React.Component {
     }
 
     startSmoothScroll(time, interpolator) {
-        this.animationStart = this.input.scrollTop;
-        this.animationProgress = 0;
-        this.animationEnd = this.input.scrollHeight - this.input.offsetHeight;
-
         if (this.animation) {
             clearInterval(this.animation);
         }
 
+        const animationStart = this.input.scrollTop;
+        const animationEnd = this.input.scrollHeight - this.input.offsetHeight;
+        let animationProgress = 0;
+
+        if (animationStart >= animationEnd) {
+            this.input.scrollTop = animationEnd;
+            return;
+        }
+
         this.animation = setInterval(() => {
-            this.animationProgress += 16;
-            var timeStep = this.animationProgress / time;
-            this.input.scrollTop = this.animationStart +
-                interpolator(timeStep) * (this.animationEnd - this.animationStart);
-            if (this.animationProgress > time) {
+            animationProgress += 16;
+            var timeStep = animationProgress / time;
+            this.input.scrollTop = animationStart +
+                interpolator(timeStep) * (animationEnd - animationStart);
+            if (animationProgress > time) {
                 clearInterval(this.animation);
-                this.input.scrollTop = this.animationEnd;
+                this.input.scrollTop = animationEnd;
             }
         }, 16);
     }
@@ -84,6 +89,8 @@ class TerminalLink extends React.Component {
         if (!this.props.selected || this.props.terminal.inProg) {
             return;
         }
+
+        this.input.scrollTop = this.input.scrollHeight;
 
         if (e.keyCode === Constants.KEY_ENTER) {
             this.props.executeCommand(command);

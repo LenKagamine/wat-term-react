@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "webpack": "webpack --progress --watch",
-    "prod": "webpack -p"
+    "prod": "webpack -p --progress"
   },
   "repository": {
     "type": "git",

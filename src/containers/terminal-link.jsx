@@ -103,11 +103,13 @@ class TerminalLink extends React.Component {
                 historyIndex: history.length
             });
         }
-        else if (e.keyCode === Constants.KEY_UP_ARROW && this.state.historyIndex > 0) {
-            this.setState({
-                cursor: history[this.state.historyIndex - 1].length,
-                historyIndex: this.state.historyIndex - 1
-            });
+        else if (e.keyCode === Constants.KEY_UP_ARROW) {
+            if (this.state.historyIndex > 0) {
+                this.setState({
+                    cursor: history[this.state.historyIndex - 1].length,
+                    historyIndex: this.state.historyIndex - 1
+                });
+            }
             e.preventDefault();
         }
         else if (e.keyCode === Constants.KEY_DOWN_ARROW && this.state.historyIndex < history.length - 1) {

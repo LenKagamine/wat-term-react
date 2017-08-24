@@ -11,16 +11,7 @@ import cat from './files/cat';
 import edit from './files/edit';
 
 import Constants from '../constants';
-
-function findWindow(state, id) {
-    var windows = state.workspaces[state.selectedWorkspace].windows;
-    for(var i = 0; i < windows.length; i++) {
-        if (windows[i].id === id) {
-            return i;
-        }
-    }
-    return -1;
-}
+import { findWindow } from '../utils';
 
 function parseInput(text) {
     return text.trim().match(/[^\s"']+|"([^"]*)"|'([^']*)'/g)
@@ -46,7 +37,7 @@ function Script(state, command, params) {
 function executeCommand(state, text) {
     const [command, ...params] = parseInput(text);
     console.log(command, params);
-    var script = new Script(state, command, params);
+    const script = new Script(state, command, params);
     switch(command) {
         case 'reset':
             return clear();
@@ -73,7 +64,7 @@ function executeCommand(state, text) {
             return script.execute(yum);
         default: {
             const path = Constants.WAT_TERM_CONTENT_URL + command + '/index.html';
-            var xml = new XMLHttpRequest();
+            const xml = new XMLHttpRequest();
             xml.open('GET', path, false);
             xml.send(null);
             if (xml.status == 200) {

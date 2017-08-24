@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const BottomBar = ({ numWorkspaces, selectedWorkspace, username, onClick }) => {
-    var buttons = [];
-    for (var i = 0; i < numWorkspaces; i++) {
+    let buttons = [];
+    for (let i = 0; i < numWorkspaces; i++) {
         (id =>
             buttons.push(
                 <div

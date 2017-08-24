@@ -1,7 +1,12 @@
-import Constants, {createDirectory} from '../../constants';
-// import { getDirectory } from '../../utils';
+import Constants from './constants';
 
-function getDirectory(directory, currDir) {
+let currDir = {};
+
+export default function test(wfs) {
+    currDir = wfs;
+}
+
+export function getDirectory(directory) {
     const parts = directory.split('/');
     let dirStack = [currDir];
     for (let i = 1; i < parts.length; i++) {
@@ -44,20 +49,32 @@ function getDirectory(directory, currDir) {
     return [currDir, path];
 }
 
-function run(state, params) {
-    if (params.length === 1) {
-        if (getDirectory(this.terminal.workingDirectory + '/' + params[0], state.wfs)) {
-            this.output(params[0] + ': Directory already exists');
-        }
-        else {
-            getDirectory(this.terminal.workingDirectory, state.wfs)[0].data.push(createDirectory(params[0]));
-        }
-    }
-    else {
-        this.output('Incorrect number of parameters');
-    }
+export function getFile(path) {
+    const end = path.lastIndexOf('/');
+    if (end === -1) return false;
 
-    return state;
+    const parts = path.split('/');
+    const filename = parts[parts.length - 1];
+    const containingDirRes = getDirectory(path.substring(0, end));
+    if (containingDirRes === false) return false;
+
+    const containingPath = containingDirRes[1];
+    const containingDir = containingDirRes[0];
+    for (let j = 0; j < containingDir.data.length; j++) {
+        if (containingDir.data[j].type === Constants.FILE_TYPE &&
+            containingDir.data[j].name === filename) {
+            return [containingDir.data[j], containingPath + '/' + filename];
+        }
+    }
+    return false;
 }
 
-export default run;
+export function findWindow(state, id) {
+    const windows = state.workspaces[state.selectedWorkspace].windows;
+    for (let i = 0; i < windows.length; i++) {
+        if (windows[i].id === id) {
+            return i;
+        }
+    }
+    return -1;
+}

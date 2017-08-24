@@ -7,23 +7,14 @@
 
 import executeCommand from '../commands';
 import { save } from '../storage';
-
-function findWindow(state, id) {
-    var windows = state.workspaces[state.selectedWorkspace].windows;
-    for(var i = 0; i < windows.length; i++) {
-        if (windows[i].id === id) {
-            return i;
-        }
-    }
-    return -1;
-}
+import { findWindow } from '../utils';
 
 const rootReducer = function (state = {}, action) {
     if (action.type !== 'UPDATE_COMMAND') console.log(action);
-    var newState = JSON.parse(JSON.stringify(state));
+    let newState = JSON.parse(JSON.stringify(state));
 
     const index = findWindow(state, state.selectedWindow);
-    var newTerminal = newState.workspaces[newState.selectedWorkspace].windows[index].terminal;
+    let newTerminal = newState.workspaces[newState.selectedWorkspace].windows[index].terminal;
 
     switch(action.type) {
         case 'SELECT_WINDOW': {
@@ -44,6 +35,15 @@ const rootReducer = function (state = {}, action) {
             newTerminal.history[action.index] = action.text;
             return newState;
         }
+        case 'ADD_COMMAND': {
+            newTerminal.output.push({
+                text: action.text,
+                prompt: action.showPrompt ?
+                    state.wsh.env.prompt.replace('%w', newTerminal.workingDirectory) :
+                    ''
+            });
+            return newState;
+        }
         case 'EXECUTE_COMMAND': {
             newTerminal.history[newTerminal.history.length - 1] = action.text;
             newTerminal.history.push('');
@@ -56,7 +56,7 @@ const rootReducer = function (state = {}, action) {
             return executeCommand(newState, action.text);
         }
         case 'KILL_SCRIPT': {
-            var scriptIndex = findWindow(newState, parseInt(action.id));
+            const scriptIndex = findWindow(newState, parseInt(action.id));
             newState.workspaces[newState.selectedWorkspace].windows[scriptIndex].terminal.inProg = false;
             return newState;
         }

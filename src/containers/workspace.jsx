@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import Window from './window.jsx';
 
 const Workspace = ({ workspace, currentWindowId }) => {
-    var windows = [];
-    for(var i = 0; i < workspace.windows.length; i++) {
+    let windows = [];
+    for (let i = 0; i < workspace.windows.length; i++) {
         windows.push(
             <Window
                 key={workspace.windows[i].id}

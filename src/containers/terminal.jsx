@@ -6,8 +6,8 @@ const Terminal = ({output, command, cursor, prompt, selected}) => {
     const cursorText = command.slice(cursor, cursor + 1) || ' ';
     const rightText = command.slice(cursor + 1);
 
-    var formatOutput = [];
-    for (var i = 0; i < output.length; i++) {
+    let formatOutput = [];
+    for (let i = 0; i < output.length; i++) {
         formatOutput.push(
             <p key={i + '_' + output[i].text}>
                 <span className='prompt'>{'' + output[i].prompt}</span>

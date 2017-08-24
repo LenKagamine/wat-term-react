@@ -35,7 +35,7 @@ function load(callback) {
 
 function clear() {
     chrome.storage.local.clear(() => {
-        var error = chrome.runtime.lastError;
+        const error = chrome.runtime.lastError;
         if (error) {
             console.error(error);
         }

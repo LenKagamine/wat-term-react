@@ -35,11 +35,13 @@ class TerminalLink extends React.Component {
     }
 
     componentDidUpdate() {
-        this.startSmoothScroll(500, function(x) {
-            // return (1 - Math.cos(Math.PI * x)) / 2;
-            // return Math.cbrt(x - 0.5) / 1.585 + 0.5;
-            return 3*x*x - 2*x*x*x;
-        });
+        if (this.props.selected) {
+            this.startSmoothScroll(500, function(x) {
+                // return (1 - Math.cos(Math.PI * x)) / 2;
+                // return Math.cbrt(x - 0.5) / 1.585 + 0.5;
+                return 3*x*x - 2*x*x*x;
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {

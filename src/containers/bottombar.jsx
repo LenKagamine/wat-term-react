@@ -48,7 +48,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onClick: id => {
             dispatch({
-                type: 'SELECT_WORKPLACE',
+                type: 'SELECT_WORKSPACE',
                 id
             })
         }

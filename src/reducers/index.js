@@ -23,7 +23,7 @@ const rootReducer = function (state = {}, action) {
                 selectedWindow: action.id
             };
         }
-        case 'SELECT_WORKPLACE': {
+        case 'SELECT_WORKSPACE': {
             return {
                 ...state,
                 selectedWorkspace: action.id,

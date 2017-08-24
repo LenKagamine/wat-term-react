@@ -103,6 +103,14 @@ class TerminalLink extends React.Component {
                 historyIndex: history.length
             });
         }
+        else if (e.keyCode === Constants.KEY_LEFT_ARROW && e.shiftKey
+            && this.props.selectedWorkspace > 0) {
+            this.props.selectWorkspace(this.props.selectedWorkspace - 1);
+        }
+        else if (e.keyCode === Constants.KEY_RIGHT_ARROW && e.shiftKey
+            && this.props.selectedWorkspace < this.props.workspaceCount - 1) {
+            this.props.selectWorkspace(this.props.selectedWorkspace + 1);
+        }
         else if (e.keyCode === Constants.KEY_UP_ARROW) {
             if (this.state.historyIndex > 0) {
                 this.setState({
@@ -223,16 +231,21 @@ class TerminalLink extends React.Component {
 
 TerminalLink.propTypes = {
     terminal: PropTypes.object.isRequired,
+    selectedWorkspace: PropTypes.number.isRequired,
+    workspaceCount: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
     prompt: PropTypes.string.isRequired,
     // Action Dispatch
     updateCommand: PropTypes.func.isRequired,
     addCommand: PropTypes.func.isRequired,
     executeCommand: PropTypes.func.isRequired,
+    selectWorkspace: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     return {
+        selectedWorkspace: state.selectedWorkspace,
+        workspaceCount: state.workspaces.length,
         prompt: state.wsh.env.prompt
     }
 }
@@ -257,6 +270,12 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: 'EXECUTE_COMMAND',
                 text
+            })
+        },
+        selectWorkspace: id => {
+            dispatch({
+                type: 'SELECT_WORKSPACE',
+                id
             })
         }
     }

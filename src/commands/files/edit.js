@@ -15,7 +15,9 @@ function run(state, params, windowId) {
             text = navResult[0].data;
         }
         const result = window.prompt('Editing' + path + ':', text);
-        getFile(path)[0].data = result;
+        if (result !== null) {
+            getFile(path)[0].data = result;
+        }
     }
     else {
         this.output('Incorrect number of parameters', false);

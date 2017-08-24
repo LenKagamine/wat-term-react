@@ -5,6 +5,11 @@ function run(state, params) {
         if (params[0] === 'add') {
             state.workspaces.push(createWorkspace());
         }
+        else if (params[0] >= 0 && params[0] < state.workspaces.length) {
+            const newIndex = parseInt(params[0]);
+            state.selectedWorkspace = newIndex;
+            state.selectedWindow = state.workspaces[newIndex].windows[0].id;
+        }
         else {
             this.output('Unknown parameter ' + params[0]);
         }

@@ -30,13 +30,11 @@ export function getDirectory(directory) {
             // Found it
             if (currDir.data[j].name === parts[i] && currDir.data[j].type === Constants.DIR_TYPE) {
                 found = j;
+                dirStack.push(currDir.data[j]);
                 break;
             }
         }
-        if (found !== -1) {
-            dirStack.push(currDir.data[j])
-        }
-        else {
+        if (found === -1) {
             return false;
         }
         currDir = dirStack[dirStack.length - 1];

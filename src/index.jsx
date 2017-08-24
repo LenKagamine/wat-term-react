@@ -8,7 +8,7 @@ import reducers from './reducers';
 import Storage from './storage';
 import App from './containers/app.jsx';
 import Constants, {createFile} from './constants';
-import test, { getDirectory, getFile } from './utils';
+import { getDirectory, getFile } from './utils';
 
 // Storage.clear();
 Storage.load(newState => {
@@ -22,8 +22,6 @@ Storage.load(newState => {
     // });
 
     window.getState = () => store.getState();
-
-    store.subscribe(() => test(store.getState().wfs));
 
     render(
         <Provider store={store}>
@@ -52,7 +50,7 @@ Storage.load(newState => {
                 });
             }
             else if (parts[0] === 'requestFile') {
-                const result = getFile(message.substring(message.indexOf('|') + 1));
+                const result = getFile(message.substring(message.indexOf('|') + 1), store.getState().wfs);
                 let contents = '';
                 if (result !== false) {
                     contents = result[0].data;
@@ -60,19 +58,19 @@ Storage.load(newState => {
                 event.source.postMessage('file|' + contents, event.origin);
             }
             else if (parts[0] === 'writeFile') {
-                createOrModifyFileAtPath(parts[1], message.split('|').slice(2).join('|'));
+                createOrModifyFileAtPath(parts[1], message.split('|').slice(2).join('|'), store.getState().wfs);
             }
         }
     }
 
 });
 
-function createOrModifyFileAtPath(path, contents) {
-    let fileObject = getFile(path);
+function createOrModifyFileAtPath(path, contents, wfs) {
+    let fileObject = getFile(path, wfs);
     const parts = path.split("/");
     if (fileObject === false) {
         // Need to Create
-        let enclosingDir = getDirectory(path.substring(0, path.lastIndexOf("/")));
+        let enclosingDir = getDirectory(path.substring(0, path.lastIndexOf("/")), state.wfs);
         if (enclosingDir !== false) {
             let newFile = createFile(parts[parts.length - 1]);
             newFile.data = contents;

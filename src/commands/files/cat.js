@@ -3,7 +3,7 @@ import { getFile } from '../../utils';
 
 function run(state, params) {
     if (params.length === 1) {
-        const navResult = getFile(this.terminal.workingDirectory + "/" + params[0]);
+        const navResult = getFile(this.terminal.workingDirectory + "/" + params[0], state.wfs);
         if (navResult === false) {
             this.output(params[0] + ' was not found');
         }

@@ -6,7 +6,7 @@ function run(state, params) {
         this.terminal.workingDirectory = '~';
     }
     else if (params.length === 1) {
-        const navResult = getDirectory(this.terminal.workingDirectory + '/' + params[0]);
+        const navResult = getDirectory(this.terminal.workingDirectory + '/' + params[0], state.wfs);
         if (navResult) {
             this.terminal.workingDirectory = navResult[1];
         }

@@ -1,12 +1,6 @@
 import Constants from './constants';
 
-let currDir = {};
-
-export default function test(wfs) {
-    currDir = wfs;
-}
-
-export function getDirectory(directory) {
+export function getDirectory(directory, currDir) {
     const parts = directory.split('/');
     let dirStack = [currDir];
     for (let i = 1; i < parts.length; i++) {
@@ -47,13 +41,13 @@ export function getDirectory(directory) {
     return [currDir, path];
 }
 
-export function getFile(path) {
+export function getFile(path, currDir) {
     const end = path.lastIndexOf('/');
     if (end === -1) return false;
 
     const parts = path.split('/');
     const filename = parts[parts.length - 1];
-    const containingDirRes = getDirectory(path.substring(0, end));
+    const containingDirRes = getDirectory(path.substring(0, end), currDir);
     if (containingDirRes === false) return false;
 
     const containingPath = containingDirRes[1];
@@ -75,4 +69,59 @@ export function findWindow(state, id) {
         }
     }
     return -1;
+}
+
+// the following commands either returns a list of windows that are exact
+//   borders of the given index, or false if there are none
+function borderingComp(index, windows, borderingComp, boundaryComp1, boundaryComp2) {
+    let borderingWindows = [];
+    const a = windows[index];
+    for (let i = 0; i < windows.length; i++) {
+        if (i !== index) {
+            const b = windows[i];
+            if (borderingComp(a, b)) {
+                // Bordering
+                if (boundaryComp1(a, b)) {
+                    borderingWindows.push(i);
+                }
+                else if (!boundaryComp2(a, b)) {
+                    // Borders on edge but exceeds limit.
+                    return false;
+                    continue;
+                }
+            }
+        }
+    }
+    if (borderingWindows.length === 0) {
+        return false;
+    }
+    return borderingWindows;
+}
+
+export function getBorderingLeft(index, windows) {
+    return borderingComp(index, windows,
+        function(a, b) { return b.x + b.width === a.x; },
+        function(a, b) { return b.y >= a.y && b.y + b.height <= a.y + a.height; },
+        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; });
+}
+
+export function getBorderingRight(index, windows) {
+    return borderingComp(index, windows,
+        function(a, b) { return b.x === a.x + a.width; },
+        function(a, b) { return b.y >= a.y && b.y + b.height <= a.y + a.height; },
+        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; });
+}
+
+export function getBorderingTop(index, windows) {
+    return borderingComp(index, windows,
+        function(a, b) { return b.y + b.height === a.y; },
+        function(a, b) { return b.x >= a.x && b.x + b.width <= a.x + a.width; },
+        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; });
+}
+
+export function getBorderingBottom(index, windows) {
+    return borderingComp(index, windows,
+        function(a, b) { return b.y === a.y + a.height; },
+        function(a, b) { return b.x >= a.x && b.x + b.width <= a.x + a.width; },
+        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; });
 }

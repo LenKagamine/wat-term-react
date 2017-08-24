@@ -151,7 +151,7 @@ class TerminalLink extends React.Component {
             if (words.length > 1) {
                 const lastWord = words[words.length - 1];
                 // Grab Matches
-                const workingDirectory = getDirectory(this.props.terminal.workingDirectory)[0];
+                const workingDirectory = getDirectory(this.props.terminal.workingDirectory, this.props.wfs)[0];
                 const matches = workingDirectory.data.filter(data => data.name.match('^' + lastWord));
                 if (matches.length === 1) {
                     // Can autofill
@@ -235,6 +235,7 @@ TerminalLink.propTypes = {
     workspaceCount: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
     prompt: PropTypes.string.isRequired,
+    wfs: PropTypes.object.isRequired,
     // Action Dispatch
     updateCommand: PropTypes.func.isRequired,
     addCommand: PropTypes.func.isRequired,
@@ -246,7 +247,8 @@ const mapStateToProps = state => {
     return {
         selectedWorkspace: state.selectedWorkspace,
         workspaceCount: state.workspaces.length,
-        prompt: state.wsh.env.prompt
+        prompt: state.wsh.env.prompt,
+        wfs: state.wfs
     }
 }
 

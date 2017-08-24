@@ -2,7 +2,7 @@ import Constants, {createFile} from '../../constants';
 import { getDirectory, getFile } from '../../utils';
 
 function run(state, params, windowId) {
-    const workingDirectory = getDirectory(this.terminal.workingDirectory)[0];
+    const workingDirectory = getDirectory(this.terminal.workingDirectory, state.wfs)[0];
 
     if (params.length === 1) {
         const path = this.terminal.workingDirectory + '/' + params[0];
@@ -16,7 +16,7 @@ function run(state, params, windowId) {
         }
         const result = window.prompt('Editing' + path + ':', text);
         if (result !== null) {
-            getFile(path)[0].data = result;
+            getFile(path, state.wfs)[0].data = result;
         }
     }
     else {

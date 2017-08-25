@@ -30,7 +30,7 @@ class Window extends React.Component {
                         '&cache=' + this.cacheParamValue +
                         '&id=' + window.id +
                         '&env=' + encodeURIComponent(JSON.stringify(env)) +
-                        '&params=' + JSON.stringify(window.terminal.params)}
+                        '&params=' + encodeURIComponent(JSON.stringify(window.terminal.params))}
                 ></iframe>
             :
                 <span>

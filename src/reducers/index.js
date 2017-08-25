@@ -9,7 +9,7 @@ import ExecuteCommand from '../commands';
 import { save } from '../storage';
 import { findWindow } from '../utils';
 import Constants from '../constants';
-import { getBorderingLeft, getBorderingRight, 
+import { getBorderingLeft, getBorderingRight,
          getBorderingTop, getBorderingBottom } from '../utils';
 
 const rootReducer = function (state = {}, action) {
@@ -35,7 +35,7 @@ const rootReducer = function (state = {}, action) {
         }
         case 'INTENT_SELECT_WORKSPACE': {
             let currentWorkspace = state.selectedWorkspace;
-            if (action.direction === Constants.KEY_LEFT_ARROW && 
+            if (action.direction === Constants.KEY_LEFT_ARROW &&
                     currentWorkspace > 0) {
                 currentWorkspace--;
             }
@@ -57,7 +57,7 @@ const rootReducer = function (state = {}, action) {
                 case Constants.KEY_RIGHT_ARROW: result = getBorderingRight(index, currentWindows, false); break;
                 case Constants.KEY_UP_ARROW: result = getBorderingTop(index, currentWindows, false); break;
                 case Constants.KEY_DOWN_ARROW: result = getBorderingBottom(index, currentWindows, false); break;
-            }            
+            }
             if (result) {
                 return {
                     ...state,
@@ -77,7 +77,8 @@ const rootReducer = function (state = {}, action) {
             newTerminal.output.push({
                 text: action.text,
                 prompt: action.showPrompt ?
-                    state.wsh.env.prompt.replace('%w', newTerminal.workingDirectory) :
+                    state.wsh.env.prompt.replace('%w', newTerminal.workingDirectory)
+                                        .replace('%u', state.wsh.env.username) :
                     ''
             });
             return newState;
@@ -89,6 +90,7 @@ const rootReducer = function (state = {}, action) {
             newTerminal.output.push({
                 text: action.text,
                 prompt: state.wsh.env.prompt.replace('%w', newTerminal.workingDirectory)
+                                            .replace('%u', state.wsh.env.username)
             });
 
             return ExecuteCommand(newState, action.text);

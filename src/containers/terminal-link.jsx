@@ -108,8 +108,8 @@ class TerminalLink extends React.Component {
             this.props.workspaceKeyDispatch(e.keyCode);
             e.preventDefault();
         }
-        else if ([Constants.KEY_LEFT_ARROW, Constants.KEY_RIGHT_ARROW, 
-                  Constants.KEY_UP_ARROW, Constants.KEY_DOWN_ARROW].indexOf(e.keyCode) > -1 
+        else if ([Constants.KEY_LEFT_ARROW, Constants.KEY_RIGHT_ARROW,
+                  Constants.KEY_UP_ARROW, Constants.KEY_DOWN_ARROW].indexOf(e.keyCode) > -1
                   && e.shiftKey) {
             this.props.windowKeyDispatch(e.keyCode);
             e.preventDefault();
@@ -207,7 +207,8 @@ class TerminalLink extends React.Component {
     }
 
     render() {
-        const prompt = this.props.prompt.replace('%w', this.props.terminal.workingDirectory);
+        const prompt = this.props.prompt.replace('%w', this.props.terminal.workingDirectory)
+                                        .replace('%u', this.props.username);
         let command = this.props.terminal.history[this.state.historyIndex];
         if (command === undefined) {
             command = this.props.terminal.history[0];
@@ -233,7 +234,7 @@ class TerminalLink extends React.Component {
 };
 
 TerminalLink.propTypes = {
-    terminal: PropTypes.object.isRequired,    
+    terminal: PropTypes.object.isRequired,
     selected: PropTypes.bool.isRequired,
     prompt: PropTypes.string.isRequired,
     wfs: PropTypes.object.isRequired,
@@ -250,6 +251,7 @@ const mapStateToProps = state => {
         selectedWorkspace: state.selectedWorkspace,
         workspaceCount: state.workspaces.length,
         prompt: state.wsh.env.prompt,
+        username: state.wsh.env.username,
         wfs: state.wfs
     }
 }

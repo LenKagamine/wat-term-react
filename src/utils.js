@@ -73,7 +73,7 @@ export function findWindow(state, id) {
 
 // the following commands either returns a list of windows that are exact
 //   borders of the given index, or false if there are none
-function borderingComp(index, windows, borderingComp, boundaryComp1, boundaryComp2) {
+function borderingComp(index, windows, borderingComp, boundaryComp1, boundaryComp2, isStrict) {
     let borderingWindows = [];
     const a = windows[index];
     for (let i = 0; i < windows.length; i++) {
@@ -81,13 +81,15 @@ function borderingComp(index, windows, borderingComp, boundaryComp1, boundaryCom
             const b = windows[i];
             if (borderingComp(a, b)) {
                 // Bordering
-                if (boundaryComp1(a, b)) {
+                if (boundaryComp1(a, b) || !isStrict) {
                     borderingWindows.push(i);
                 }
                 else if (!boundaryComp2(a, b)) {
                     // Borders on edge but exceeds limit.
-                    return false;
                     continue;
+                }
+                else {
+                    return false;
                 }
             }
         }
@@ -98,30 +100,34 @@ function borderingComp(index, windows, borderingComp, boundaryComp1, boundaryCom
     return borderingWindows;
 }
 
-export function getBorderingLeft(index, windows) {
+export function getBorderingLeft(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.x + b.width === a.x; },
         function(a, b) { return b.y >= a.y && b.y + b.height <= a.y + a.height; },
-        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; });
+        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; }, 
+        isStrict);
 }
 
-export function getBorderingRight(index, windows) {
+export function getBorderingRight(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.x === a.x + a.width; },
         function(a, b) { return b.y >= a.y && b.y + b.height <= a.y + a.height; },
-        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; });
+        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; }, 
+        isStrict);
 }
 
-export function getBorderingTop(index, windows) {
+export function getBorderingTop(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.y + b.height === a.y; },
         function(a, b) { return b.x >= a.x && b.x + b.width <= a.x + a.width; },
-        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; });
+        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; }, 
+        isStrict);
 }
 
-export function getBorderingBottom(index, windows) {
+export function getBorderingBottom(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.y === a.y + a.height; },
         function(a, b) { return b.x >= a.x && b.x + b.width <= a.x + a.width; },
-        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; });
+        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; }, 
+        isStrict);
 }

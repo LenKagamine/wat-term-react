@@ -38,6 +38,7 @@ class TerminalLink extends React.Component {
 
     componentDidUpdate() {
         if (this.props.selected) {
+            this.input.focus();
             this.startSmoothScroll(500, function(x) {
                 // return (1 - Math.cos(Math.PI * x)) / 2;
                 // return Math.cbrt(x - 0.5) / 1.585 + 0.5;
@@ -103,13 +104,15 @@ class TerminalLink extends React.Component {
                 historyIndex: history.length
             });
         }
-        else if (e.keyCode === Constants.KEY_LEFT_ARROW && e.shiftKey
-            && this.props.selectedWorkspace > 0) {
-            this.props.selectWorkspace(this.props.selectedWorkspace - 1);
+        else if ((e.keyCode === Constants.KEY_LEFT_ARROW || e.keyCode === Constants.KEY_RIGHT_ARROW) && e.altKey) {
+            this.props.workspaceKeyDispatch(e.keyCode);
+            e.preventDefault();
         }
-        else if (e.keyCode === Constants.KEY_RIGHT_ARROW && e.shiftKey
-            && this.props.selectedWorkspace < this.props.workspaceCount - 1) {
-            this.props.selectWorkspace(this.props.selectedWorkspace + 1);
+        else if ([Constants.KEY_LEFT_ARROW, Constants.KEY_RIGHT_ARROW, 
+                  Constants.KEY_UP_ARROW, Constants.KEY_DOWN_ARROW].indexOf(e.keyCode) > -1 
+                  && e.shiftKey) {
+            this.props.windowKeyDispatch(e.keyCode);
+            e.preventDefault();
         }
         else if (e.keyCode === Constants.KEY_UP_ARROW) {
             if (this.state.historyIndex > 0) {
@@ -230,9 +233,7 @@ class TerminalLink extends React.Component {
 };
 
 TerminalLink.propTypes = {
-    terminal: PropTypes.object.isRequired,
-    selectedWorkspace: PropTypes.number.isRequired,
-    workspaceCount: PropTypes.number.isRequired,
+    terminal: PropTypes.object.isRequired,    
     selected: PropTypes.bool.isRequired,
     prompt: PropTypes.string.isRequired,
     wfs: PropTypes.object.isRequired,
@@ -240,7 +241,8 @@ TerminalLink.propTypes = {
     updateCommand: PropTypes.func.isRequired,
     addCommand: PropTypes.func.isRequired,
     executeCommand: PropTypes.func.isRequired,
-    selectWorkspace: PropTypes.func.isRequired
+    workspaceKeyDispatch: PropTypes.func.isRequired,
+    windowKeyDispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -274,10 +276,16 @@ const mapDispatchToProps = dispatch => {
                 text
             })
         },
-        selectWorkspace: id => {
+        workspaceKeyDispatch: direction => {
             dispatch({
-                type: 'SELECT_WORKSPACE',
-                id
+                type: 'INTENT_SELECT_WORKSPACE',
+                direction
+            })
+        },
+        windowKeyDispatch: direction => {
+            dispatch({
+                type: 'INTENT_SELECT_WINDOW',
+                direction
             })
         }
     }

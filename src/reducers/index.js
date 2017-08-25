@@ -5,9 +5,12 @@
 //
 // const todoApp = combineReducers(reducers)
 
-import executeCommand from '../commands';
+import ExecuteCommand from '../commands';
 import { save } from '../storage';
 import { findWindow } from '../utils';
+import Constants from '../constants';
+import { getBorderingLeft, getBorderingRight, 
+         getBorderingTop, getBorderingBottom } from '../utils';
 
 const rootReducer = function (state = {}, action) {
     if (action.type !== 'UPDATE_COMMAND') console.log(action);
@@ -29,6 +32,41 @@ const rootReducer = function (state = {}, action) {
                 selectedWorkspace: action.id,
                 selectedWindow: state.workspaces[action.id].windows[0].id
             };
+        }
+        case 'INTENT_SELECT_WORKSPACE': {
+            let currentWorkspace = state.selectedWorkspace;
+            if (action.direction === Constants.KEY_LEFT_ARROW && 
+                    currentWorkspace > 0) {
+                currentWorkspace--;
+            }
+            else if (action.direction === Constants.KEY_RIGHT_ARROW &&
+                    currentWorkspace < state.workspaces.length - 1) {
+               currentWorkspace++;
+            }
+            return {
+                ...state,
+                selectedWorkspace: currentWorkspace,
+                selectedWindow: state.workspaces[currentWorkspace].windows[0].id
+            };
+        }
+        case 'INTENT_SELECT_WINDOW': {
+            let result;
+            let currentWindows = state.workspaces[state.selectedWorkspace].windows;
+            switch(action.direction) {
+                case Constants.KEY_LEFT_ARROW: result = getBorderingLeft(index, currentWindows, false); break;
+                case Constants.KEY_RIGHT_ARROW: result = getBorderingRight(index, currentWindows, false); break;
+                case Constants.KEY_UP_ARROW: result = getBorderingTop(index, currentWindows, false); break;
+                case Constants.KEY_DOWN_ARROW: result = getBorderingBottom(index, currentWindows, false); break;
+            }            
+            if (result) {
+                return {
+                    ...state,
+                    selectedWindow: currentWindows[result[0]].id
+                };
+            }
+            else {
+                return state;
+            }
         }
         case 'UPDATE_COMMAND': {
             // Split into smaller reducers later
@@ -53,7 +91,7 @@ const rootReducer = function (state = {}, action) {
                 prompt: state.wsh.env.prompt.replace('%w', newTerminal.workingDirectory)
             });
 
-            return executeCommand(newState, action.text);
+            return ExecuteCommand(newState, action.text);
         }
         case 'KILL_SCRIPT': {
             const scriptIndex = findWindow(newState, parseInt(action.id));

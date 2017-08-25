@@ -70,7 +70,7 @@ function createOrModifyFileAtPath(path, contents, wfs) {
     const parts = path.split("/");
     if (fileObject === false) {
         // Need to Create
-        let enclosingDir = getDirectory(path.substring(0, path.lastIndexOf("/")), state.wfs);
+        let enclosingDir = getDirectory(path.substring(0, path.lastIndexOf("/")), wfs);
         if (enclosingDir !== false) {
             let newFile = createFile(parts[parts.length - 1]);
             newFile.data = contents;

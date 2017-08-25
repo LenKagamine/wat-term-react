@@ -86,9 +86,6 @@ function borderingComp(index, windows, borderingComp, boundaryComp1, boundaryCom
                 }
                 else if (!boundaryComp2(a, b)) {
                     // Borders on edge but exceeds limit.
-                    continue;
-                }
-                else {
                     return false;
                 }
             }
@@ -104,7 +101,7 @@ export function getBorderingLeft(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.x + b.width === a.x; },
         function(a, b) { return b.y >= a.y && b.y + b.height <= a.y + a.height; },
-        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; }, 
+        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; },
         isStrict);
 }
 
@@ -112,7 +109,7 @@ export function getBorderingRight(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.x === a.x + a.width; },
         function(a, b) { return b.y >= a.y && b.y + b.height <= a.y + a.height; },
-        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; }, 
+        function(a, b) { return b.y >= a.y + a.height || b.y + b.height <= a.y; },
         isStrict);
 }
 
@@ -120,7 +117,7 @@ export function getBorderingTop(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.y + b.height === a.y; },
         function(a, b) { return b.x >= a.x && b.x + b.width <= a.x + a.width; },
-        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; }, 
+        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; },
         isStrict);
 }
 
@@ -128,6 +125,6 @@ export function getBorderingBottom(index, windows, isStrict = true) {
     return borderingComp(index, windows,
         function(a, b) { return b.y === a.y + a.height; },
         function(a, b) { return b.x >= a.x && b.x + b.width <= a.x + a.width; },
-        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; }, 
+        function(a, b) { return b.x >= a.x + a.width || b.x + b.width <= a.x; },
         isStrict);
 }

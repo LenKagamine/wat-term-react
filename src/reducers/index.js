@@ -98,6 +98,7 @@ const rootReducer = function (state = {}, action) {
         case 'KILL_SCRIPT': {
             const scriptIndex = findWindow(newState, parseInt(action.id));
             newState.workspaces[newState.selectedWorkspace].windows[scriptIndex].terminal.inProg = false;
+            newState.selectedWindow = action.id;
             return newState;
         }
         case 'SET_ENV': {

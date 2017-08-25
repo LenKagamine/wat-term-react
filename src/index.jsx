@@ -39,7 +39,7 @@ Storage.load(newState => {
             if (parts[0] === 'done') {
                 store.dispatch({
                     type: 'KILL_SCRIPT',
-                    id: parts[1]
+                    id: parseInt(parts[1])
                 });
             }
             else if (parts[0] === 'env') {
